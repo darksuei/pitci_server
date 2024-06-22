@@ -18,7 +18,6 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
     const user = await AppDataSource.manager.findOne(UserEntity, {
       where: { id: jwtInfo.id },
-      relations: ["documents"],
     });
 
     if (!user) throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
