@@ -18,7 +18,7 @@ export const AppDataSource = new DataSource({
   database: DB_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [path.join(__dirname, "../entity/*.{js,ts}")],
+  entities: [path.join(__dirname, "../entity/*.{js,ts}"), path.join(__dirname, "../entity/*/*.{js,ts}")],
   migrations: [],
   subscribers: [],
   ssl: {

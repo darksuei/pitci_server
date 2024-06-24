@@ -16,6 +16,7 @@ export async function patchPhoneNumber(req: Request, res: Response) {
       return res.status(httpStatus.BAD_REQUEST).json({ message: "Invalid verification code" });
 
     user.phone = phoneNumber;
+    user.phone_verification_code = "";
 
     await AppDataSource.manager.save(user);
 

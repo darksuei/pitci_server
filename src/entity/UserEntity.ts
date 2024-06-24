@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { AuthEntity } from "./AuthEntity";
 import { RoleEnum } from "../utils/enums";
+import { PitchEntity } from "./PitchEntity";
 
 @Entity("users")
 export class UserEntity {
@@ -39,6 +40,10 @@ export class UserEntity {
   @OneToOne(() => AuthEntity, (entity) => entity.user)
   @JoinColumn()
   auth!: AuthEntity;
+
+  @OneToOne(() => PitchEntity, { cascade: true })
+  @JoinColumn()
+  pitch!: PitchEntity;
 
   @CreateDateColumn()
   created_at?: Date;
