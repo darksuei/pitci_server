@@ -8,6 +8,7 @@ import { SALT_ROUNDS } from "../../utils/constants";
 import { RegisterSchema, validateRequest } from "../../validators";
 import AuthService from "../../services/AuthService";
 import { ApiError } from "../../middlewares/error";
+import { NovuService } from "../../services/novu";
 
 export async function postRegister(req: Request, res: Response) {
   try {
@@ -31,14 +32,13 @@ export async function postRegister(req: Request, res: Response) {
 
     const auth = await AuthService.initAuth(user);
 
-    // Send an email verification code to the user
+    await NovuService.getInstance().createSubscriber({ id: user.id, email: user.email });
 
-    // await NovuService.getInstance().createNovuUserSubscriber({ user });
-
-    // await NovuService.getInstance().verificationCodeNotification({
-    //   id: user.id,
-    //   code: auth.verificationCode,
-    // });
+    await NovuService.getInstance().sendEmailVerificationNotification({
+      id: user.id,
+      name: user.full_name,
+      verificationCode: auth.verificationCode,
+    });
 
     return res.status(httpStatus.OK).json({
       success: true,
