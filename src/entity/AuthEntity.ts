@@ -26,8 +26,10 @@ export class AuthEntity {
   verificationCode!: string;
 
   @Column({
-    default: VerificationStatusEnum.UNVERIFIED,
+    type: "enum",
     enum: VerificationStatusEnum,
+    default: VerificationStatusEnum.UNVERIFIED,
+    nullable: true,
   })
   verificationStatus!: VerificationStatusEnum;
 

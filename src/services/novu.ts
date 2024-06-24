@@ -42,4 +42,24 @@ export class NovuService {
       },
     });
   }
+
+  async sendForgotPasswordEmail({
+    id,
+    name,
+    verificationCode,
+  }: {
+    id: string;
+    name: string;
+    verificationCode: string;
+  }) {
+    await NovuService.getInstance().novu.trigger(NovuTriggersEnum.FORGOT_PASSWORD, {
+      to: {
+        subscriberId: id,
+      },
+      payload: {
+        name,
+        verificationCode,
+      },
+    });
+  }
 }

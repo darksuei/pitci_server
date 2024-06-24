@@ -24,6 +24,9 @@ export class UserEntity {
   @Column()
   password!: string;
 
+  @Column({ nullable: true })
+  forgot_password_code!: string;
+
   @Column({ type: "enum", enum: RoleEnum, default: RoleEnum.USER })
   role!: RoleEnum;
 
