@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { PatchUserPasswordValidationSchema, validateRequest } from "../../validators";
 import bcrypt from "bcrypt";
-import { SALT_ROUNDS } from "../../utils/constants";
 import * as z from "zod";
-import { AppDataSource } from "../../database/dataSource";
+import { SALT_ROUNDS } from "../../../utils/constants";
+import { PatchUserPasswordValidationSchema, validateRequest } from "../../../validators";
+import { AppDataSource } from "../../../database/dataSource";
 
 export async function patchUserPassword(req: Request, res: Response) {
   try {

@@ -21,11 +21,17 @@ export class UserEntity {
   @Column()
   email!: string;
 
+  @Column({ nullable: true })
+  phone!: string;
+
   @Column()
   password!: string;
 
   @Column({ nullable: true })
   forgot_password_code!: string;
+
+  @Column({ nullable: true })
+  phone_verification_code!: string;
 
   @Column({ type: "enum", enum: RoleEnum, default: RoleEnum.USER })
   role!: RoleEnum;

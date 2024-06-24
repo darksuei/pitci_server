@@ -39,6 +39,15 @@ export const PatchUserPasswordValidationSchema = z.object({
     .max(100, "Password must be less than 100 characters"),
 });
 
+export const PostRequestPhoneNumberChangeValidationSchema = z.object({
+  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
+});
+
+export const PatchPhoneNumberValidationSchema = z.object({
+  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
+  verificationCode: z.string().length(6, "Please enter a valid verification code"),
+});
+
 export function validateRequest<T>(schema: z.ZodTypeAny, payload: T, validationFunction?: Function) {
   try {
     schema.parse(payload);

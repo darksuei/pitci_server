@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { PostVerifyForgotPasswordCodeValidationSchema, validateRequest } from "../../validators";
+import { PostVerifyForgotPasswordCodeValidationSchema, validateRequest } from "../../../validators";
 
 export async function postVerifyForgotPasswordCode(req: Request, res: Response) {
   try {

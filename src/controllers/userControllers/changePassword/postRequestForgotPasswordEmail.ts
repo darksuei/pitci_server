@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { PostRequestForgotPasswordEmailSchema, validateRequest } from "../../validators";
 import * as z from "zod";
-import { ApiError } from "../../middlewares/error";
-import { NovuService } from "../../services/novu";
-import { generateVerificationCode } from "../../utils";
-import { AppDataSource } from "../../database/dataSource";
+import { ApiError } from "../../../middlewares/error";
+import { AppDataSource } from "../../../database/dataSource";
+import { generateVerificationCode } from "../../../utils";
+import { NovuService } from "../../../services/novu";
+import { PostRequestForgotPasswordEmailSchema, validateRequest } from "../../../validators";
 
 export async function postRequestForgotPasswordEmail(req: Request, res: Response) {
   try {

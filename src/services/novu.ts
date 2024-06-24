@@ -23,6 +23,12 @@ export class NovuService {
     });
   }
 
+  async updateSubscriberPhone({ id, phone }: { id: string; phone?: string }) {
+    await NovuService.getInstance().novu.subscribers.update(id, {
+      phone,
+    });
+  }
+
   async sendEmailVerificationNotification({
     id,
     name,
@@ -58,6 +64,17 @@ export class NovuService {
       },
       payload: {
         name,
+        verificationCode,
+      },
+    });
+  }
+
+  async sendPhoneNumberVerificationOtp({ id, verificationCode }: { id: string; verificationCode: string }) {
+    await NovuService.getInstance().novu.trigger(NovuTriggersEnum.PHONE_VERIFICATION, {
+      to: {
+        subscriberId: id,
+      },
+      payload: {
         verificationCode,
       },
     });
