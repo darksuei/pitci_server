@@ -1,7 +1,9 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -33,9 +35,12 @@ export class PitchEntity {
   @JoinColumn()
   technical_agreement!: TechnicalAgreementEntity;
 
-  @OneToOne(() => UserEntity, { cascade: true })
+  @ManyToOne(() => UserEntity, (user) => user.pitch, { onDelete: "CASCADE" })
   @JoinColumn()
   user!: UserEntity;
+
+  @Column({ default: false })
+  is_submitted!: boolean;
 
   @CreateDateColumn()
   created_at!: Date;

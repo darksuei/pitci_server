@@ -2,18 +2,11 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { AppDataSource } from "../../database/dataSource";
-import { ParamIdValidationSchema, validateRequest } from "../../validators";
-import * as z from "zod";
 
-export async function getPitch(req: Request, res: Response) {
+export async function getUserPitches(req: Request, res: Response) {
   try {
-    validateRequest(ParamIdValidationSchema, req.params);
-
-    const { id } = req.params as z.infer<typeof ParamIdValidationSchema>;
-
-    const pitch = await AppDataSource.manager.findOne(PitchEntity, {
+    const pitches = await AppDataSource.manager.find(PitchEntity, {
       where: {
-        id,
         user: {
           id: req.user!.id,
         },
@@ -27,7 +20,7 @@ export async function getPitch(req: Request, res: Response) {
       ],
     });
 
-    return res.status(httpStatus.OK).json({ success: true, pitch });
+    return res.status(httpStatus.OK).json({ success: true, pitches });
   } catch (e: any) {
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)

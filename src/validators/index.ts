@@ -5,6 +5,10 @@ import * as z from "zod";
 import { VERIFICATION_CODE_EXPIRY_TIME } from "../utils/constants";
 import { PatchPitchStep } from "../types";
 
+export const ParamIdValidationSchema = z.object({
+  id: z.string().uuid("Please enter a valid id"),
+});
+
 export const LoginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: z.string(),
@@ -92,6 +96,17 @@ export const PatchPitchStepValidationSchema = z.object({
     "competition_questions",
     "technical_agreement",
   ]),
+});
+
+export const GetResendVerificationCodeValidationSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
+});
+
+export const PatchNotificationSettingsValidationSchema = z.object({
+  notificationStatus: z.boolean().optional(),
+  pitchNotificationStatus: z.boolean().optional(),
+  eventNotificationStatus: z.boolean().optional(),
+  postNotificationStatus: z.boolean().optional(),
 });
 
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {

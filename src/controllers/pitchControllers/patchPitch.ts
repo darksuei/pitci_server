@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import {
+  ParamIdValidationSchema,
   PatchPitchStepValidationSchema,
   PatchPitchValidationSchemaFactory,
   validateRequest,
@@ -13,6 +14,10 @@ import { ApiError } from "../../middlewares/error";
 
 export async function patchPitch(req: Request, res: Response) {
   try {
+    validateRequest(ParamIdValidationSchema, req.params);
+
+    const { id } = req.params as z.infer<typeof ParamIdValidationSchema>;
+
     validateRequest(PatchPitchStepValidationSchema, req.query);
 
     const { step } = req.query as z.infer<typeof PatchPitchStepValidationSchema>;
@@ -21,6 +26,7 @@ export async function patchPitch(req: Request, res: Response) {
 
     let pitch = await AppDataSource.manager.findOne(PitchEntity, {
       where: {
+        id,
         user: {
           id: req.user!.id,
         },

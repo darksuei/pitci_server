@@ -5,23 +5,12 @@ import * as z from "zod";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { AppDataSource } from "../../database/dataSource";
 import { createPersonalInformationProvider } from "../../providers/pitchProvider";
-import { ApiError } from "../../middlewares/error";
 
 export async function postInitiatePitch(req: Request, res: Response) {
   try {
     const user = req.user!;
 
     validateRequest(PostInitiatePitchValidationSchema, req.body);
-
-    const existingPitch = await AppDataSource.manager.findOne(PitchEntity, {
-      where: {
-        user: {
-          id: user.id,
-        },
-      },
-    });
-
-    if (existingPitch) throw new ApiError(httpStatus.BAD_REQUEST, "User already has a pitch");
 
     const personalInformation = await createPersonalInformationProvider(
       req.body as z.infer<typeof PostInitiatePitchValidationSchema>

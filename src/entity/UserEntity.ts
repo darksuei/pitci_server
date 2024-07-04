@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { AuthEntity } from "./AuthEntity";
 import { RoleEnum } from "../utils/enums";
@@ -41,9 +42,23 @@ export class UserEntity {
   @JoinColumn()
   auth!: AuthEntity;
 
-  @OneToOne(() => PitchEntity, { cascade: true })
+  @OneToMany(() => PitchEntity, (pitch) => pitch.user, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
-  pitch!: PitchEntity;
+  pitch!: PitchEntity[];
+
+  @Column({ default: false })
+  notification_status!: boolean;
+
+  @Column({ default: false })
+  pitch_notification_status!: boolean;
+
+  @Column({ default: false })
+  post_notification_status!: boolean;
+
+  @Column({ default: false })
+  event_notification_status!: boolean;
 
   @CreateDateColumn()
   created_at?: Date;
