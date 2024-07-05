@@ -1,6 +1,7 @@
 import { type Application } from "express";
 import logger from "../config/logger.config";
 import { readEnv } from "../config/readEnv.config";
+import swaggerDocs from "../config/swagger.config";
 
 export default function setupServer(
   app: Application,
@@ -12,5 +13,7 @@ export default function setupServer(
     logger.info(`Application is running on http://${APP_HOST}:${APP_PORT}/api/v1`);
     logger.info("Application is running in " + readEnv("NODE_ENV") + " mode");
     await tryInitializeDatabase();
+
+    swaggerDocs(app, readEnv("BASE_URL") as string);
   });
 }

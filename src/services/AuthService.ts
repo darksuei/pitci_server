@@ -24,7 +24,9 @@ class AuthService {
     entity.verificationStatus = VerificationStatusEnum.PENDING;
     entity.verificationTimeStamp = new Date();
 
-    return await this.AppDataSource.manager.save(entity);
+    entity = await this.AppDataSource.manager.save(entity);
+
+    return entity;
   }
 
   public async initAuthWithoutVerification(user: UserEntity) {
@@ -40,7 +42,9 @@ class AuthService {
     entity.verificationStatus = VerificationStatusEnum.VERIFIED;
     entity.verificationTimeStamp = new Date();
 
-    return await this.AppDataSource.manager.save(entity);
+    entity = await this.AppDataSource.manager.save(entity);
+
+    return entity;
   }
 
   public async completeAuth(user: UserEntity) {
@@ -53,8 +57,11 @@ class AuthService {
     entity.verificationStatus = VerificationStatusEnum.VERIFIED;
     entity.verificationTimeStamp = new Date();
 
-    return await this.AppDataSource.manager.save(entity);
+    entity = await this.AppDataSource.manager.save(entity);
+
+    return entity;
   }
+
   public async validateAuth(sessionId: string, user: UserEntity) {
     let entity = await this.AppDataSource.manager.findOneBy(this.AuthEntity, { user: { id: user.id } });
 

@@ -5,16 +5,22 @@ import * as z from "zod";
 import { SALT_ROUNDS } from "../../../utils/constants";
 import { PatchUserPasswordValidationSchema, validateRequest } from "../../../validators";
 import { AppDataSource } from "../../../database/dataSource";
+import { UserEntity } from "../../../entity/UserEntity";
+import { ApiError } from "../../../middlewares/error";
 
 export async function patchUserPassword(req: Request, res: Response) {
   try {
-    const user = req.user!;
-
     validateRequest(PatchUserPasswordValidationSchema, req.body);
 
-    const { newPassword, verificationCode } = req.body as z.infer<typeof PatchUserPasswordValidationSchema>;
+    const { email, newPassword, verificationCode } = req.body as z.infer<
+      typeof PatchUserPasswordValidationSchema
+    >;
 
-    if (verificationCode !== req.user!.forgot_password_code)
+    const user = await AppDataSource.manager.findOne(UserEntity, { where: { email } });
+
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+    if (verificationCode !== user.forgot_password_code)
       return res.status(httpStatus.BAD_REQUEST).json({ message: "Invalid verification code" });
 
     const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);

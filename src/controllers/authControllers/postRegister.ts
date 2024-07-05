@@ -32,6 +32,10 @@ export async function postRegister(req: Request, res: Response) {
 
     const auth = await AuthService.initAuth(user);
 
+    user.auth = auth;
+
+    await AppDataSource.manager.save(user);
+
     await NovuService.getInstance().createSubscriber({ id: user.id, email: user.email });
 
     await NovuService.getInstance().sendEmailVerificationNotification({

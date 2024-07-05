@@ -12,7 +12,7 @@ export function signToken<T extends object>(payload: T, expire?: number) {
       ...payload,
       iat: new Date().getTime(),
       exp: expire || new Date().getTime() + 1000 * 60 * 60 * 24,
-      iss: "upi_server",
+      iss: "pitci_server",
     },
     JWT_SECRET
   );

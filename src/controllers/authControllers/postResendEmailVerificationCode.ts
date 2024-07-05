@@ -7,18 +7,23 @@ import { AppDataSource } from "../../database/dataSource";
 import { UserEntity } from "../../entity/UserEntity";
 import { ApiError } from "../../middlewares/error";
 import { NovuService } from "../../services/novu";
+import { VerificationStatusEnum } from "../../utils/enums";
 
-export async function getResendEmailVerificationCode(req: Request, res: Response) {
+export async function postResendEmailVerificationCode(req: Request, res: Response) {
   try {
-    validateRequest(GetResendVerificationCodeValidationSchema, req.query);
+    validateRequest(GetResendVerificationCodeValidationSchema, req.body);
 
-    const { email } = req.query as z.infer<typeof GetResendVerificationCodeValidationSchema>;
+    const { email } = req.body as z.infer<typeof GetResendVerificationCodeValidationSchema>;
 
     const user = await AppDataSource.manager.findOne(UserEntity, {
       where: { email },
+      relations: ["auth"],
     });
 
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+    if (user.auth.verificationStatus === VerificationStatusEnum.VERIFIED)
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email already verified. Please login to continue.");
 
     const auth = await AuthService.initAuth(user);
 
@@ -30,7 +35,7 @@ export async function getResendEmailVerificationCode(req: Request, res: Response
 
     return res.status(httpStatus.OK).json({
       success: true,
-      message: `Verification code resent to ${email}`,
+      message: `Verification code sent to ${email}`,
       code: auth.verificationCode,
     });
   } catch (e: any) {

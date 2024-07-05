@@ -4,6 +4,7 @@ import { PitchEntity } from "../../entity/PitchEntity";
 import { AppDataSource } from "../../database/dataSource";
 import { ParamIdValidationSchema, validateRequest } from "../../validators";
 import * as z from "zod";
+import { ApiError } from "../../middlewares/error";
 
 export async function getPitch(req: Request, res: Response) {
   try {
@@ -26,6 +27,8 @@ export async function getPitch(req: Request, res: Response) {
         "technical_agreement",
       ],
     });
+
+    if (!pitch) throw new ApiError(httpStatus.NOT_FOUND, "Pitch not found.");
 
     return res.status(httpStatus.OK).json({ success: true, pitch });
   } catch (e: any) {

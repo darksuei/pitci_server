@@ -1,27 +1,28 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import * as z from "zod";
-import { ApiError } from "../../../middlewares/error";
 import { AppDataSource } from "../../../database/dataSource";
 import { generateVerificationCode } from "../../../utils";
 import { NovuService } from "../../../services/novu";
 import { PostRequestForgotPasswordEmailSchema, validateRequest } from "../../../validators";
+import { UserEntity } from "../../../entity/UserEntity";
+import { ApiError } from "../../../middlewares/error";
 
 export async function postRequestForgotPasswordEmail(req: Request, res: Response) {
   try {
-    const user = req.user!;
-
     validateRequest(PostRequestForgotPasswordEmailSchema, req.body);
 
     const { email } = req.body as z.infer<typeof PostRequestForgotPasswordEmailSchema>;
 
-    if (email !== req.user!.email) throw new ApiError(httpStatus.FORBIDDEN, "Invalid email");
+    const user = await AppDataSource.manager.findOne(UserEntity, { where: { email: req.body.email } });
+
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
 
     const verificationCode = generateVerificationCode();
 
     await NovuService.getInstance().sendForgotPasswordEmail({
-      id: req.user!.id,
-      name: req.user!.full_name,
+      id: user.id,
+      name: user.full_name,
       verificationCode: verificationCode,
     });
 

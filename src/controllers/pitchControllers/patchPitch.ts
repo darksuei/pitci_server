@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import {
-  ParamIdValidationSchema,
   PatchPitchStepValidationSchema,
   PatchPitchValidationSchemaFactory,
   validateRequest,
@@ -14,13 +13,9 @@ import { ApiError } from "../../middlewares/error";
 
 export async function patchPitch(req: Request, res: Response) {
   try {
-    validateRequest(ParamIdValidationSchema, req.params);
+    validateRequest(PatchPitchStepValidationSchema, req.params);
 
-    const { id } = req.params as z.infer<typeof ParamIdValidationSchema>;
-
-    validateRequest(PatchPitchStepValidationSchema, req.query);
-
-    const { step } = req.query as z.infer<typeof PatchPitchStepValidationSchema>;
+    const { id, step } = req.params as z.infer<typeof PatchPitchStepValidationSchema>;
 
     validateRequest(PatchPitchValidationSchemaFactory(step), req.body);
 

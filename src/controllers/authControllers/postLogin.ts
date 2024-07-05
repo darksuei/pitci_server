@@ -8,6 +8,7 @@ import AuthService from "../../services/AuthService";
 import { ApiError } from "../../middlewares/error";
 import { LoginSchema, validateRequest } from "../../validators";
 import { signToken } from "../../utils";
+import { VerificationStatusEnum } from "../../utils/enums";
 
 export async function postLogin(req: Request, res: Response) {
   try {
@@ -17,9 +18,13 @@ export async function postLogin(req: Request, res: Response) {
 
     const user = await AppDataSource.manager.findOne(UserEntity, {
       where: { email },
+      relations: ["auth"],
     });
 
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found.");
+
+    if (user.auth.verificationStatus !== VerificationStatusEnum.VERIFIED)
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email not verified. Please verify your email.");
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 

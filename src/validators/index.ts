@@ -33,10 +33,12 @@ export const PostRequestForgotPasswordEmailSchema = z.object({
 });
 
 export const PostVerifyForgotPasswordCodeValidationSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
   verificationCode: z.string().length(6, "Please enter a valid verification code"),
 });
 
 export const PatchUserPasswordValidationSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
   verificationCode: z.string().length(6, "Please enter a valid verification code"),
   newPassword: z
     .string()
@@ -96,6 +98,7 @@ export const PatchPitchStepValidationSchema = z.object({
     "competition_questions",
     "technical_agreement",
   ]),
+  id: z.string().uuid("Please enter a valid id"),
 });
 
 export const GetResendVerificationCodeValidationSchema = z.object({

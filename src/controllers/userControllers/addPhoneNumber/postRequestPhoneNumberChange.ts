@@ -39,7 +39,6 @@ export async function postRequestPhoneNumberChange(req: Request, res: Response) 
       .status(httpStatus.OK)
       .json({ success: true, message: `Verification code sent to ${phoneNumber}`, code: verificationCode });
   } catch (e: any) {
-    console.log(e);
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: e.message ?? "Internal Server Error" });
