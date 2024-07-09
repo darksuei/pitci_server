@@ -30,7 +30,7 @@ export async function seedSuperAdmin(AppDataSource: DataSource) {
 
     admin = await AppDataSource.manager.save(admin);
 
-    const auth = await AuthService.initAuth(admin);
+    const auth = await AuthService.initAuthWithoutVerification(admin);
 
     admin.auth = auth;
 

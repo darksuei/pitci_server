@@ -16,3 +16,10 @@ export enum NovuTriggersEnum {
   FORGOT_PASSWORD = "forgot-password",
   PHONE_VERIFICATION = "phone-verification",
 }
+
+export enum ReviewStatusEnum {
+  NOT_SUBMITTED = "not-submitted",
+  PENDING = "pending",
+  APPROVED = "approved",
+  DECLINED = "declined",
+}

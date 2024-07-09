@@ -4,6 +4,7 @@ import { ApiError } from "../middlewares/error";
 import * as z from "zod";
 import { VERIFICATION_CODE_EXPIRY_TIME } from "../utils/constants";
 import { PatchPitchStep } from "../types";
+import { ReviewStatusEnum } from "../utils/enums";
 
 export const ParamIdValidationSchema = z.object({
   id: z.string().uuid("Please enter a valid id"),
@@ -74,6 +75,7 @@ export const PatchProfessionalBackroundValidationSchema = z.object({
 });
 
 export const PatchCompetitionQuestionsValidationSchema = z.object({
+  businessName: z.string().optional(),
   businessDescription: z.string(),
   reasonOfInterest: z.string(),
   investmentPrizeUsagePlan: z.string(),
@@ -112,6 +114,11 @@ export const PatchNotificationSettingsValidationSchema = z.object({
   postNotificationStatus: z.boolean().optional(),
 });
 
+export const PatchReviewPitchValidationSchema = z.object({
+  pitchId: z.string().uuid("Please enter a valid pitch id"),
+  reviewStatus: z.enum([ReviewStatusEnum.APPROVED, ReviewStatusEnum.DECLINED]),
+});
+
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {
   switch (step) {
     case "personal_information":
@@ -131,6 +138,19 @@ export function validateRequest<T>(schema: z.ZodTypeAny, payload: T, validationF
     validationFunction && validationFunction();
   } catch (e: any) {
     logger.error("Validation error: %o", e);
+    throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, e.message ?? "Validation error");
+  }
+}
+
+export async function validateRequestAsync<T>(
+  schema: z.ZodTypeAny,
+  payload: T,
+  validationFunction?: Function
+) {
+  try {
+    schema.parse(payload);
+    validationFunction && (await validationFunction());
+  } catch (e: any) {
     throw new ApiError(httpStatus.UNPROCESSABLE_ENTITY, e.message ?? "Validation error");
   }
 }

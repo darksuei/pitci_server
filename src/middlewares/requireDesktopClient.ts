@@ -2,7 +2,7 @@ import { NextFunction, type Request, type Response } from "express";
 import httpStatus from "http-status";
 import { ApiError } from "./error";
 
-export async function getVerifyDevice(req: Request, res: Response, next: NextFunction) {
+export async function requireDesktopClient(req: Request, res: Response, next: NextFunction) {
   try {
     const userAgent = req.useragent!;
 

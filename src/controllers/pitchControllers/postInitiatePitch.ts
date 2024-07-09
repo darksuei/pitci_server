@@ -5,10 +5,15 @@ import * as z from "zod";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { AppDataSource } from "../../database/dataSource";
 import { createPersonalInformationProvider } from "../../providers/pitchProvider";
+import { ReviewEntity } from "../../entity/ReviewEntity";
+import { ReviewStatusEnum } from "../../utils/enums";
+import { UserEntity } from "../../entity/UserEntity";
 
 export async function postInitiatePitch(req: Request, res: Response) {
   try {
-    const user = req.user!;
+    const user = await AppDataSource.manager.findOne(UserEntity, {
+      where: { id: req.user!.id },
+    });
 
     validateRequest(PostInitiatePitchValidationSchema, req.body);
 
@@ -20,7 +25,15 @@ export async function postInitiatePitch(req: Request, res: Response) {
 
     pitch.personal_information = personalInformation;
 
-    pitch.user = user;
+    pitch.user = user!;
+
+    let review = new ReviewEntity();
+
+    review.review_status = ReviewStatusEnum.NOT_SUBMITTED;
+
+    review = await AppDataSource.manager.save(review);
+
+    pitch.review = review;
 
     pitch = await AppDataSource.manager.save(pitch);
 

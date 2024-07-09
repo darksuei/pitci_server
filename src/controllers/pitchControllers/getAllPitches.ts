@@ -12,6 +12,7 @@ export async function getAllPitches(_req: Request, res: Response) {
         "professional_background",
         "competition_questions",
         "technical_agreement",
+        "review",
       ],
     });
 

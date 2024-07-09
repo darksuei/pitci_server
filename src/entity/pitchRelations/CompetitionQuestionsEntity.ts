@@ -5,6 +5,9 @@ export class CompetitionQuestionsEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column({ nullable: true }) // Only nullable for dev
+  business_name!: string;
+
   @Column()
   business_description!: string;
 
