@@ -7,7 +7,7 @@ import httpStatus from "http-status";
 import AuthService from "../../services/AuthService";
 import { ApiError } from "../../middlewares/error";
 import { LoginSchema, validateRequest } from "../../validators";
-import { signToken } from "../../utils";
+import { checkIfAdmin, signToken } from "../../utils";
 import { VerificationStatusEnum } from "../../utils/enums";
 
 export async function postLogin(req: Request, res: Response) {
@@ -42,6 +42,7 @@ export async function postLogin(req: Request, res: Response) {
       success: true,
       message: "Login successful.",
       token,
+      isAdmin: checkIfAdmin(user.role),
     });
   } catch (e: any) {
     return res

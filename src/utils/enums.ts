@@ -6,6 +6,7 @@ export enum VerificationStatusEnum {
 }
 
 export enum RoleEnum {
+  SUPER_ADMIN = "superadmin",
   ADMIN = "admin",
   USER = "user",
 }

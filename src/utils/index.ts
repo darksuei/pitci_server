@@ -1,6 +1,7 @@
 import logger from "../config/logger.config";
 import { JWT_SECRET } from "./constants";
 import jwt from "jsonwebtoken";
+import { RoleEnum } from "./enums";
 
 export function generateVerificationCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -25,4 +26,8 @@ export function verifyToken(token: string) {
     logger.error("Error verifying JWT token:", error);
     return null;
   }
+}
+
+export function checkIfAdmin(role: RoleEnum) {
+  return role === RoleEnum.ADMIN || role === RoleEnum.SUPER_ADMIN;
 }

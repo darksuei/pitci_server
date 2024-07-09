@@ -291,7 +291,7 @@ router.route("/submit-pitch/:id").post(authenticate, postSubmitPitch);
 
 /**
  * @openapi
- * /api/v1/pitch/update-pitch/{step}/{id}:
+ * /api/v1/pitch/update-pitch/{id}/{step}:
  *   patch:
  *     summary: Update a pitch
  *     tags:
