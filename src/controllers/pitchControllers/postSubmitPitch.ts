@@ -5,6 +5,8 @@ import * as z from "zod";
 import { AppDataSource } from "../../database/dataSource";
 import { ApiError } from "../../middlewares/error";
 import { PitchEntity } from "../../entity/PitchEntity";
+import { createBusiness } from "../../utils/business";
+import { ReviewStatusEnum } from "../../utils/enums";
 
 export async function postSubmitPitch(req: Request, res: Response) {
   try {
@@ -20,6 +22,7 @@ export async function postSubmitPitch(req: Request, res: Response) {
         "professional_background",
         "competition_questions",
         "technical_agreement",
+        "review",
       ],
     });
 
@@ -27,9 +30,22 @@ export async function postSubmitPitch(req: Request, res: Response) {
 
     if (pitch.is_submitted) throw new ApiError(httpStatus.BAD_REQUEST, "Pitch already submitted");
 
+    if (
+      !pitch.personal_information ||
+      !pitch.professional_background ||
+      !pitch.competition_questions ||
+      !pitch.technical_agreement
+    )
+      throw new ApiError(httpStatus.BAD_REQUEST, "Incomplete pitch data.");
+
     pitch.is_submitted = true;
 
+    pitch.review.review_status = ReviewStatusEnum.PENDING;
+
     pitch = await AppDataSource.manager.save(pitch);
+
+    // On submission create a business for this pitch application
+    await createBusiness(pitch, req.user!.id!);
 
     return res.status(httpStatus.OK).json({ success: true, message: "Pitch Submitted Successfully.", pitch });
   } catch (e: any) {

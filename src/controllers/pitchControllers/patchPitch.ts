@@ -4,16 +4,26 @@ import {
   PatchPitchStepValidationSchema,
   PatchPitchValidationSchemaFactory,
   validateRequest,
+  validateRequestAsync,
 } from "../../validators";
 import * as z from "zod";
 import { createPitchUpdateFactory, savePitchUpdateProvider } from "../../providers/pitchProvider";
 import { AppDataSource } from "../../database/dataSource";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { ApiError } from "../../middlewares/error";
+import { BusinessEntity } from "../../entity/BusinessEntity";
 
 export async function patchPitch(req: Request, res: Response) {
   try {
-    validateRequest(PatchPitchStepValidationSchema, req.params);
+    await validateRequestAsync(PatchPitchStepValidationSchema, req.params, async () => {
+      if (req.params.step === "competition_questions" && req.body.business_name) {
+        const business = await AppDataSource.manager.findOne(BusinessEntity, {
+          where: { business_name: req.body.business_name },
+        });
+
+        if (business) throw new ApiError(httpStatus.BAD_REQUEST, "Business name already exists");
+      }
+    });
 
     const { id, step } = req.params as z.infer<typeof PatchPitchStepValidationSchema>;
 
@@ -32,6 +42,7 @@ export async function patchPitch(req: Request, res: Response) {
         "professional_background",
         "competition_questions",
         "technical_agreement",
+        "review",
       ],
     });
 

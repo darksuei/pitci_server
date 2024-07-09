@@ -13,6 +13,7 @@ import { ProfessionalBackgroundEntity } from "./pitchRelations/ProfessionalBackg
 import { CompetitionQuestionsEntity } from "./pitchRelations/CompetitionQuestionsEntity";
 import { TechnicalAgreementEntity } from "./pitchRelations/TechnicalAgreementEntity";
 import { UserEntity } from "./UserEntity";
+import { ReviewEntity } from "./ReviewEntity";
 
 @Entity("pitch")
 export class PitchEntity {
@@ -41,6 +42,10 @@ export class PitchEntity {
 
   @Column({ default: false })
   is_submitted!: boolean;
+
+  @OneToOne(() => ReviewEntity, { cascade: true })
+  @JoinColumn()
+  review!: ReviewEntity;
 
   @CreateDateColumn()
   created_at!: Date;

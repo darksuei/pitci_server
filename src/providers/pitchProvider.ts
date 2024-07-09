@@ -45,6 +45,7 @@ export async function createCompetitionQuestionsProvider(
 ) {
   const competitionQuestions = new CompetitionQuestionsEntity();
 
+  payload.businessName && (competitionQuestions.business_name = payload.businessName);
   competitionQuestions.business_description = payload.businessDescription;
   competitionQuestions.reason_of_interest = payload.reasonOfInterest;
   competitionQuestions.investment_prize_usage_plan = payload.investmentPrizeUsagePlan;

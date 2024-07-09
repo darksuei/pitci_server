@@ -1,15 +1,13 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { PitchEntity } from "../../entity/PitchEntity";
 import { AppDataSource } from "../../database/dataSource";
+import { PitchEntity } from "../../entity/PitchEntity";
 
-export async function getUserPitches(req: Request, res: Response) {
+export async function getPitches(_req: Request, res: Response) {
   try {
     const pitches = await AppDataSource.manager.find(PitchEntity, {
       where: {
-        user: {
-          id: req.user!.id,
-        },
+        is_submitted: true,
       },
       relations: [
         "user",
@@ -21,7 +19,7 @@ export async function getUserPitches(req: Request, res: Response) {
       ],
     });
 
-    return res.status(httpStatus.OK).json({ success: true, pitches });
+    return res.status(httpStatus.OK).json(pitches);
   } catch (e: any) {
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)
