@@ -9,6 +9,14 @@ export async function getPitches(_req: Request, res: Response) {
       where: {
         is_submitted: true,
       },
+      relations: [
+        "user",
+        "personal_information",
+        "professional_background",
+        "competition_questions",
+        "technical_agreement",
+        "review",
+      ],
     });
 
     return res.status(httpStatus.OK).json(pitches);

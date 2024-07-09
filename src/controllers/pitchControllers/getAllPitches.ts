@@ -6,6 +6,9 @@ import { AppDataSource } from "../../database/dataSource";
 export async function getAllPitches(_req: Request, res: Response) {
   try {
     const pitches = await AppDataSource.manager.find(PitchEntity, {
+      where: {
+        is_submitted: true,
+      },
       relations: [
         "user",
         "personal_information",
