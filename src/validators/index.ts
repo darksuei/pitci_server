@@ -119,6 +119,18 @@ export const PatchReviewPitchValidationSchema = z.object({
   reviewStatus: z.enum([ReviewStatusEnum.APPROVED, ReviewStatusEnum.DECLINED]),
 });
 
+export const PostCreateEventValidationSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  dateTime: z.string().datetime(),
+  durationHours: z.number(),
+  location: z.string(),
+});
+
+export const PostAddAdminValidationSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
+});
+
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {
   switch (step) {
     case "personal_information":
