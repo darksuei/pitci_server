@@ -38,7 +38,9 @@ export class UserEntity {
   @Column({ type: "enum", enum: RoleEnum, default: RoleEnum.USER })
   role!: RoleEnum;
 
-  @OneToOne(() => AuthEntity, (entity) => entity.user)
+  @OneToOne(() => AuthEntity, (entity) => entity.user, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   auth!: AuthEntity;
 

@@ -10,8 +10,16 @@ import logger from "../config/logger.config";
 
 export async function seedSuperAdmin(AppDataSource: DataSource) {
   try {
+    if (
+      !readEnv("SUPER_ADMIN_EMAIL") ||
+      !readEnv("SUPER_ADMIN_NAME") ||
+      !readEnv("SUPER_ADMIN_PASSWORD") ||
+      !readEnv("SUPER_ADMIN_PHONE")
+    )
+      return;
+
     const existingSuperAdmin = await AppDataSource.manager.findOne(UserEntity, {
-      where: { role: RoleEnum.SUPER_ADMIN },
+      where: { email: readEnv("SUPER_ADMIN_EMAIL") as string },
     });
 
     if (existingSuperAdmin) {
