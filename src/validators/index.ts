@@ -22,6 +22,7 @@ export const RegisterSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters")
     .max(100, "Password must be less than 100 characters"),
+  phone: z.string().optional(),
 });
 
 export const VerifyCodeValidationSchema = z.object({

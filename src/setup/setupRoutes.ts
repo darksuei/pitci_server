@@ -4,6 +4,7 @@ import authRoutes from "../routes/authRoutes";
 import userRoutes from "../routes/userRoutes";
 import pitchRoutes from "../routes/pitchRoutes";
 import adminRoutes from "../routes/adminRoutes";
+import internalRoutes from "../routes/internalRoutes";
 
 export default function setupRoutes(app: Application): void {
   app.use("/api/v1/health", healthCheckRoute);
@@ -11,4 +12,5 @@ export default function setupRoutes(app: Application): void {
   app.use("/api/v1/user", userRoutes);
   app.use("/api/v1/pitch", pitchRoutes);
   app.use("/api/v1/admin", adminRoutes);
+  app.use("/api/v1/internal", internalRoutes);
 }
