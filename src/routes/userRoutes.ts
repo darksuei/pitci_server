@@ -7,6 +7,7 @@ import { patchUserPassword } from "../controllers/userControllers/changePassword
 import { postRequestPhoneNumberChange } from "../controllers/userControllers/addPhoneNumber/postRequestPhoneNumberChange";
 import { patchPhoneNumber } from "../controllers/userControllers/addPhoneNumber/patchPhoneNumber";
 import { patchNotificationSettings } from "../controllers/userControllers/patchNotificationSettings";
+import { getBusinesses } from "../controllers/adminControllers/getBusinesses";
 
 const router = express.Router();
 
@@ -54,6 +55,34 @@ const router = express.Router();
  *                   example: Internal Server Error
  */
 router.route("/").get(authenticate, getUser);
+
+/**
+ * @swagger
+ * /api/v1/user/get-businesses:
+ *   get:
+ *     summary: Get all businesses
+ *     tags:
+ *      - user
+ *     description: Retrieves a list of all businesses in the system.
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message
+ */
+router.route("/get-businesses").get(getBusinesses);
 
 /**
  * @openapi
