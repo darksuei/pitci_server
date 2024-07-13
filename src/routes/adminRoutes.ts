@@ -13,6 +13,7 @@ import { postCreateEvent } from "../controllers/adminControllers/events/postCrea
 import { getAllEvents } from "../controllers/adminControllers/events/getAllEvents";
 import { deleteEvent } from "../controllers/adminControllers/events/deleteEvent";
 import { postAddAdmin } from "../controllers/adminControllers/postAddAdmin";
+import { getPitch } from "../controllers/adminControllers/getPitch";
 
 const router = express.Router();
 
@@ -197,6 +198,66 @@ router
 router
   .route("/get-pitches")
   .get(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), getPitches);
+
+/**
+ * @openapi
+ * /api/v1/admin/get-pitch/{id}:
+ *   get:
+ *     summary: Get user pitch details
+ *     tags:
+ *      - admin
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: The pitch ID
+ *     responses:
+ *       200:
+ *         description: Pitch details retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 pitch:
+ *                   type: object
+ *       400:
+ *         description: Bad Request - Validation Error (likely invalid ID format)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid request parameters
+ *       404:
+ *         description: Not Found - Pitch not found for the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Pitch not found
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal Server Error
+ */
+router.route("/get-pitch/:id").get(authenticate, getPitch);
 
 /**
  * @swagger
