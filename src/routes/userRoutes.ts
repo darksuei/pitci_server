@@ -8,6 +8,7 @@ import { postRequestPhoneNumberChange } from "../controllers/userControllers/add
 import { patchPhoneNumber } from "../controllers/userControllers/addPhoneNumber/patchPhoneNumber";
 import { patchNotificationSettings } from "../controllers/userControllers/patchNotificationSettings";
 import { getBusinesses } from "../controllers/adminControllers/getBusinesses";
+import { getAllEvents } from "../controllers/userControllers/getEvents";
 
 const router = express.Router();
 
@@ -455,5 +456,51 @@ router.route("/phone/request-phone-otp").post(authenticate, postRequestPhoneNumb
  *                   example: Internal Server Error
  */
 router.route("/phone/update-user-phone").patch(authenticate, patchPhoneNumber);
+
+/**
+ * @swagger
+ * /api/v1/user/get-all-events:
+ *   get:
+ *     summary: Retrieve all events
+ *     description: Retrieves a list of all events.
+ *     tags:
+ *       - user
+ *     responses:
+ *       200:
+ *         description: A list of events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   admin_id:
+ *                     type: string
+ *                   title:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   location:
+ *                     type: string
+ *                   date_time:
+ *                     type: string
+ *                     format: date-time
+ *                   duration_hours:
+ *                     type: number
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router.route("/get-all-events").get(getAllEvents);
 
 export default router;
