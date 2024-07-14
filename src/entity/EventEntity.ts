@@ -21,20 +21,22 @@ export class EventEntity {
   @Column()
   title!: string;
 
-  @Column()
-  description!: string;
+  @Column({ nullable: true })
+  description?: string;
 
-  @Column()
+  @Column({ nullable: true })
   registrationLink!: string;
 
   @OneToMany(() => LinkEntity, (entity) => entity.event, {
     onDelete: "CASCADE",
+    nullable: true,
   })
   @JoinColumn()
   otherLinks!: LinkEntity[];
 
   @OneToMany(() => SponsorEntity, (entity) => entity.event, {
     onDelete: "CASCADE",
+    nullable: true,
   })
   @JoinColumn()
   sponsors!: SponsorEntity[];
