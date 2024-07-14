@@ -34,6 +34,8 @@ export async function patchReviewPitch(req: Request, res: Response) {
     pitch.review.review_date = new Date();
 
     await AppDataSource.manager.save(pitch);
+
+    return res.status(httpStatus.OK).json({ message: "Pitch reviewed successfully." });
   } catch (e: any) {
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)

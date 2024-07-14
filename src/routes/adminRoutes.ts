@@ -269,18 +269,21 @@ router.route("/get-pitch/:id").get(authenticate, getPitch);
  *     description: Updates the review status for a specific pitch. Only authorized reviewers can patch the review status.
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - name: pitchId
- *         in: path
- *         required: true
- *         description: The id of the pitch
- *         type: string
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/PatchReviewPitchValidationSchema'
+ *             type: object
+ *             properties:
+ *               pitchId:
+ *                 type: string
+ *                 description: The id of the pitch
+ *                 example: "12345"
+ *               reviewStatus:
+ *                 type: string
+ *                 description: The status to update the pitch to
+ *                 example: "approved"
  *     responses:
  *       200:
  *         description: OK
