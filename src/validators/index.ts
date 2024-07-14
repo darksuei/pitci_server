@@ -126,6 +126,16 @@ export const PostCreateEventValidationSchema = z.object({
   dateTime: z.string().datetime(),
   durationHours: z.number(),
   location: z.string(),
+  registrationLink: z.string().optional(),
+  otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
+  sponsors: z
+    .array(
+      z.object({
+        name: z.string(),
+        description: z.string().optional(),
+      })
+    )
+    .optional(),
 });
 
 export const PostAddAdminValidationSchema = z.object({

@@ -369,6 +369,18 @@ router
  *                 type: number
  *                 description: The duration of the event in hours
  *                 example: 3
+ *               registrationLink:
+ *                 type: string
+ *                 description: The registration link for the event
+ *                 example: "https://example.com/register"
+ *               sponsors:
+ *                 type: array
+ *                 description: A list of sponsors for the event
+ *                 example: [{ name: "Sponsor 1", description: "Description 1" }]
+ *               otherLinks:
+ *                 type: array
+ *                 description: A list of other links for the event
+ *                 example: [{ title: "Link1", url: "https://example.com/otherlink" }]
  *     responses:
  *       201:
  *         description: Event created successfully
