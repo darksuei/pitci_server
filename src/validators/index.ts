@@ -76,7 +76,7 @@ export const PatchProfessionalBackroundValidationSchema = z.object({
 });
 
 export const PatchCompetitionQuestionsValidationSchema = z.object({
-  businessName: z.string().optional(),
+  businessName: z.string(),
   businessDescription: z.string(),
   reasonOfInterest: z.string(),
   investmentPrizeUsagePlan: z.string(),
