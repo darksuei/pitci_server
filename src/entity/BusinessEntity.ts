@@ -17,6 +17,15 @@ export class BusinessEntity {
   @Column()
   business_description!: string;
 
+  @Column({ nullable: true })
+  business_owner_name!: string;
+
+  @Column({ nullable: true })
+  business_owner_email!: string;
+
+  @Column({ nullable: true })
+  business_owner_phone!: string;
+
   @CreateDateColumn()
   created_at!: Date;
 

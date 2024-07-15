@@ -15,9 +15,6 @@ export async function getPitch(req: Request, res: Response) {
     const pitch = await AppDataSource.manager.findOne(PitchEntity, {
       where: {
         id,
-        user: {
-          id: req.user!.id,
-        },
       },
       relations: [
         "user",
