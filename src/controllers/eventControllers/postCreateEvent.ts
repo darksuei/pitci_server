@@ -1,11 +1,11 @@
 import httpStatus from "http-status";
 import { Request, Response } from "express";
-import { PostCreateEventValidationSchema, validateRequest } from "../../../validators";
+import { PostCreateEventValidationSchema, validateRequest } from "../../validators";
 import * as z from "zod";
-import { EventEntity } from "../../../entity/EventEntity";
-import { AppDataSource } from "../../../database/dataSource";
-import { LinkEntity } from "../../../entity/eventRelations/LinkEntity";
-import { SponsorEntity } from "../../../entity/eventRelations/SponsorEntity";
+import { EventEntity } from "../../entity/EventEntity";
+import { AppDataSource } from "../../database/dataSource";
+import { LinkEntity } from "../../entity/eventRelations/LinkEntity";
+import { SponsorEntity } from "../../entity/eventRelations/SponsorEntity";
 
 export async function postCreateEvent(req: Request, res: Response) {
   try {
