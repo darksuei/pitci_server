@@ -37,7 +37,7 @@ export async function postInitiatePitch(req: Request, res: Response) {
 
     pitch = await AppDataSource.manager.save(pitch);
 
-    return res.status(httpStatus.OK).json({ success: true, message: "Pitch saved successfully.", pitch });
+    return res.status(httpStatus.OK).json({ success: true, message: "Pitch initiated successfully.", pitch });
   } catch (e: any) {
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)

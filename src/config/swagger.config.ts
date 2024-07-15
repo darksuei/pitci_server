@@ -25,6 +25,10 @@ const options: swaggerJsdoc.Options = {
         description: "Endpoints for pitches",
       },
       {
+        name: "event",
+        description: "Endpoints for events",
+      },
+      {
         name: "admin",
         description: "Endpoints for admin operations",
       },

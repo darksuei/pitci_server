@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import { Request, Response } from "express";
-import { AppDataSource } from "../../../database/dataSource";
-import { EventEntity } from "../../../entity/EventEntity";
+import { AppDataSource } from "../../database/dataSource";
+import { EventEntity } from "../../entity/EventEntity";
 
 export async function getAllEvents(_req: Request, res: Response) {
   try {

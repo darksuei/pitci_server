@@ -1,9 +1,9 @@
 import httpStatus from "http-status";
 import { Request, Response } from "express";
-import { ParamIdValidationSchema, validateRequest } from "../../../validators";
-import { EventEntity } from "../../../entity/EventEntity";
-import { AppDataSource } from "../../../database/dataSource";
-import { ApiError } from "../../../middlewares/error";
+import { ParamIdValidationSchema, validateRequest } from "../../validators";
+import { EventEntity } from "../../entity/EventEntity";
+import { AppDataSource } from "../../database/dataSource";
+import { ApiError } from "../../middlewares/error";
 import * as z from "zod";
 
 export async function deleteEvent(req: Request, res: Response) {
