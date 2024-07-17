@@ -5,7 +5,6 @@ import * as z from "zod";
 import { AppDataSource } from "../../database/dataSource";
 import { ApiError } from "../../middlewares/error";
 import { PitchEntity } from "../../entity/PitchEntity";
-import { createBusiness } from "../../utils/business";
 import { ReviewStatusEnum } from "../../utils/enums";
 import { devEnvironment } from "../../config/readEnv.config";
 
