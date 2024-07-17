@@ -5,6 +5,7 @@ import * as z from "zod";
 import { AppDataSource } from "../../database/dataSource";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { ApiError } from "../../middlewares/error";
+import { createBusiness } from "../../utils/business";
 
 export async function patchReviewPitch(req: Request, res: Response) {
   try {
@@ -34,6 +35,8 @@ export async function patchReviewPitch(req: Request, res: Response) {
     pitch.review.review_date = new Date();
 
     await AppDataSource.manager.save(pitch);
+
+    await createBusiness(pitch, req.user!);
 
     return res.status(httpStatus.OK).json({ message: "Pitch reviewed successfully." });
   } catch (e: any) {

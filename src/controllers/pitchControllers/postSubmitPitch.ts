@@ -45,9 +45,6 @@ export async function postSubmitPitch(req: Request, res: Response) {
 
     pitch.review.review_status = ReviewStatusEnum.PENDING;
 
-    // On submission create a business for this pitch application
-    await createBusiness(pitch, req.user!);
-
     pitch = await AppDataSource.manager.save(pitch);
 
     return res.status(httpStatus.OK).json({ success: true, message: "Pitch Submitted Successfully.", pitch });
