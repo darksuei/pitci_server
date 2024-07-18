@@ -5,7 +5,6 @@ import * as z from "zod";
 import { AppDataSource } from "../../database/dataSource";
 import { ApiError } from "../../middlewares/error";
 import { PitchEntity } from "../../entity/PitchEntity";
-import { createBusiness } from "../../utils/business";
 import { ReviewStatusEnum } from "../../utils/enums";
 import { devEnvironment } from "../../config/readEnv.config";
 
@@ -44,9 +43,6 @@ export async function postSubmitPitch(req: Request, res: Response) {
     pitch.is_submitted = true;
 
     pitch.review.review_status = ReviewStatusEnum.PENDING;
-
-    // On submission create a business for this pitch application
-    await createBusiness(pitch, req.user!);
 
     pitch = await AppDataSource.manager.save(pitch);
 
