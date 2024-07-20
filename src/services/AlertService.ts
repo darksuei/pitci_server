@@ -78,7 +78,9 @@ class AlertService {
     await AppDataSource.manager.save(alert);
   }
 
-  async userPhoneNumberChanged(userId: string) {
+  async userPhoneNumberChanged(userId: string, isNotificationEnabled: boolean) {
+    if (!isNotificationEnabled) return;
+
     const alert = new AlertEntity();
     alert.userId = userId;
     alert.title = this.alerts.get("phoneNumberChanged")!;
@@ -86,7 +88,9 @@ class AlertService {
     await AppDataSource.manager.save(alert);
   }
 
-  async userPasswordChanged(userId: string) {
+  async userPasswordChanged(userId: string, isNotificationEnabled: boolean) {
+    if (!isNotificationEnabled) return;
+
     const alert = new AlertEntity();
     alert.userId = userId;
     alert.title = this.alerts.get("passwordChanged")!;

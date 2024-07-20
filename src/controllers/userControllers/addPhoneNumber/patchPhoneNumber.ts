@@ -21,7 +21,7 @@ export async function patchPhoneNumber(req: Request, res: Response) {
 
     await AppDataSource.manager.save(user);
 
-    AlertService.userPhoneNumberChanged(user.id);
+    AlertService.userPhoneNumberChanged(user.id, user.notification_status);
 
     return res.status(httpStatus.OK).json({ success: true, message: "Phone number updated successfully" });
   } catch (e: any) {

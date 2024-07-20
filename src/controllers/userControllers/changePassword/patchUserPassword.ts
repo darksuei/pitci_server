@@ -32,7 +32,7 @@ export async function patchUserPassword(req: Request, res: Response) {
 
     await AppDataSource.manager.save(user);
 
-    AlertService.userPasswordChanged(user.id);
+    AlertService.userPasswordChanged(user.id, user.notification_status);
 
     return res.status(httpStatus.OK).json({ success: true, message: "Password updated successfully" });
   } catch (e: any) {
