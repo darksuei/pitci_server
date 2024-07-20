@@ -7,6 +7,7 @@ import { UserEntity } from "../../../entity/UserEntity";
 import { ApiError } from "../../../middlewares/error";
 import { NovuService } from "../../../services/novu";
 import { generateVerificationCode } from "../../../utils";
+import { devEnvironment } from "../../../config/readEnv.config";
 
 export async function postRequestPhoneNumberChange(req: Request, res: Response) {
   try {
@@ -20,7 +21,8 @@ export async function postRequestPhoneNumberChange(req: Request, res: Response) 
       where: { phone: phoneNumber },
     });
 
-    if (existingPhoneNumber) throw new ApiError(httpStatus.BAD_REQUEST, "Phone number already exists");
+    if (!devEnvironment() && existingPhoneNumber)
+      throw new ApiError(httpStatus.BAD_REQUEST, "Phone number already exists");
 
     const verificationCode = generateVerificationCode();
 

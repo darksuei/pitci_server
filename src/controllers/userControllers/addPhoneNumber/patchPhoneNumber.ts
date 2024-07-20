@@ -3,6 +3,7 @@ import { PatchPhoneNumberValidationSchema, validateRequest } from "../../../vali
 import { AppDataSource } from "../../../database/dataSource";
 import httpStatus from "http-status";
 import * as z from "zod";
+import AlertService from "../../../services/AlertService";
 
 export async function patchPhoneNumber(req: Request, res: Response) {
   try {
@@ -19,6 +20,8 @@ export async function patchPhoneNumber(req: Request, res: Response) {
     user.phone_verification_code = "";
 
     await AppDataSource.manager.save(user);
+
+    AlertService.userPhoneNumberChanged(user.id);
 
     return res.status(httpStatus.OK).json({ success: true, message: "Phone number updated successfully" });
   } catch (e: any) {

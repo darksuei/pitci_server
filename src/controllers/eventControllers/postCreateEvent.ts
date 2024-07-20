@@ -6,6 +6,7 @@ import { EventEntity } from "../../entity/EventEntity";
 import { AppDataSource } from "../../database/dataSource";
 import { LinkEntity } from "../../entity/eventRelations/LinkEntity";
 import { SponsorEntity } from "../../entity/eventRelations/SponsorEntity";
+import AlertService from "../../services/AlertService";
 
 export async function postCreateEvent(req: Request, res: Response) {
   try {
@@ -51,6 +52,8 @@ export async function postCreateEvent(req: Request, res: Response) {
       where: { id: event.id },
       relations: ["otherLinks", "sponsors"],
     });
+
+    AlertService.newEvent(event);
 
     return res.status(httpStatus.CREATED).json({ message: "Event created successfully", event });
   } catch (e: any) {
