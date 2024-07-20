@@ -9,6 +9,8 @@ import { patchPhoneNumber } from "../controllers/userControllers/addPhoneNumber/
 import { patchNotificationSettings } from "../controllers/userControllers/patchNotificationSettings";
 import { getBusinesses } from "../controllers/adminControllers/getBusinesses";
 import { getAllEvents } from "../controllers/userControllers/getEvents";
+import { getAlerts } from "../controllers/userControllers/alerts/getAlerts";
+import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patchMarkAlertAsRead";
 
 const router = express.Router();
 
@@ -502,5 +504,92 @@ router.route("/phone/update-user-phone").patch(authenticate, patchPhoneNumber);
  *                   example: "Internal Server Error"
  */
 router.route("/get-all-events").get(getAllEvents);
+
+/**
+ * @swagger
+ * /api/v1/user/get-alerts:
+ *   get:
+ *     summary: Get user alerts
+ *     tags:
+ *      - user
+ *     description: Retrieves a list of all alerts associated with a user in the system.
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message
+ */
+router.route("/get-alerts").get(authenticate, getAlerts);
+
+/**
+ * @swagger
+ * /api/v1/user/mark-alerts-as-read:
+ *   patch:
+ *     summary: Mark alert(s) as read
+ *     description: Mark specific alerts as read or mark all alerts as read for the current user.
+ *     tags:
+ *       - user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               markAllAsRead:
+ *                 type: boolean
+ *                 description: If true, all alerts for the user will be marked as read.
+ *               alertIds:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: List of alert IDs to be marked as read.
+ *             required:
+ *               - markAllAsRead
+ *     responses:
+ *       200:
+ *         description: Alerts marked as read.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Alerts marked as read.
+ *       400:
+ *         description: Bad request. Missing required fields or validation error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Please provide either 'markAllAsRead' as true or a non-empty list of 'alertIds'.
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal Server Error
+ */
+router.route("/mark-alerts-as-read").patch(authenticate, patchMarkAlertAsRead);
 
 export default router;

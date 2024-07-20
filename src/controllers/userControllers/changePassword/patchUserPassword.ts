@@ -7,6 +7,7 @@ import { PatchUserPasswordValidationSchema, validateRequest } from "../../../val
 import { AppDataSource } from "../../../database/dataSource";
 import { UserEntity } from "../../../entity/UserEntity";
 import { ApiError } from "../../../middlewares/error";
+import AlertService from "../../../services/AlertService";
 
 export async function patchUserPassword(req: Request, res: Response) {
   try {
@@ -30,6 +31,8 @@ export async function patchUserPassword(req: Request, res: Response) {
     user.password = passwordHash;
 
     await AppDataSource.manager.save(user);
+
+    AlertService.userPasswordChanged(user.id);
 
     return res.status(httpStatus.OK).json({ success: true, message: "Password updated successfully" });
   } catch (e: any) {

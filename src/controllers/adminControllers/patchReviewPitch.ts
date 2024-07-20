@@ -6,6 +6,8 @@ import { AppDataSource } from "../../database/dataSource";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { ApiError } from "../../middlewares/error";
 import { createBusiness } from "../../utils/business";
+import AlertService from "../../services/AlertService";
+import { ReviewStatusEnum } from "../../utils/enums";
 
 export async function patchReviewPitch(req: Request, res: Response) {
   try {
@@ -37,6 +39,15 @@ export async function patchReviewPitch(req: Request, res: Response) {
     await AppDataSource.manager.save(pitch);
 
     await createBusiness(pitch, req.user!);
+
+    switch (reviewStatus) {
+      case ReviewStatusEnum.APPROVED:
+        AlertService.userPitchApproved(pitch.user.id, pitch.id);
+        break;
+      case ReviewStatusEnum.DECLINED:
+        AlertService.userPitchRejected(pitch.user.id, pitch.id);
+        break;
+    }
 
     return res.status(httpStatus.OK).json({ message: "Pitch reviewed successfully." });
   } catch (e: any) {

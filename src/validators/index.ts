@@ -142,6 +142,11 @@ export const PostAddAdminValidationSchema = z.object({
   email: z.string().email("Please enter a valid email"),
 });
 
+export const PatchMarkAlertAsReadValidationSchema = z.object({
+  alertIds: z.array(z.string().uuid()).optional(),
+  markAllAsRead: z.boolean().optional(),
+});
+
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {
   switch (step) {
     case "personal_information":

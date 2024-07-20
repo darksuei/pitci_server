@@ -50,16 +50,16 @@ export class UserEntity {
   @JoinColumn()
   pitch!: PitchEntity[];
 
-  @Column({ default: false })
+  @Column({ default: true })
   notification_status!: boolean;
 
-  @Column({ default: false })
+  @Column({ default: true })
   pitch_notification_status!: boolean;
 
-  @Column({ default: false })
+  @Column({ default: true })
   post_notification_status!: boolean;
 
-  @Column({ default: false })
+  @Column({ default: true })
   event_notification_status!: boolean;
 
   @CreateDateColumn()
