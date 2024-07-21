@@ -127,7 +127,7 @@ export const PostCreateEventValidationSchema = z.object({
   dateTime: z.string().datetime(),
   durationHours: z.number(),
   durationDays: z.number().optional(),
-  logo: z.string().optional(),
+  image: z.string().optional(),
   location: z.string(),
   registrationLink: z.string().optional(),
   otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
