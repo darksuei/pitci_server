@@ -23,6 +23,7 @@ export async function createPersonalInformationProvider(
   personal_information.full_name = payload.fullName;
   personal_information.nationality = payload.nationality;
   personal_information.phone_number = payload.phoneNumber;
+  personal_information.gender = payload.gender;
   personal_information.requires_disability_support = payload.requiresDisabilitySupport;
   payload.disabilitySupportDescription &&
     (personal_information.disability_support_description = payload.disabilitySupportDescription);

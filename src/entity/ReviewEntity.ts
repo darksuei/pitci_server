@@ -13,7 +13,7 @@ export class ReviewEntity {
   reviewer_id!: string;
 
   @Column({ nullable: true })
-  reviewer_name!: string;
+  reviewer_name?: string;
 
   @Column({ nullable: true })
   review_date!: Date;

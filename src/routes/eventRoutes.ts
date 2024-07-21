@@ -50,7 +50,7 @@ const router = express.Router();
  *                 type: number
  *                 description: The duration of the event in days
  *                 example: 1
- *               logo:
+ *               image:
  *                 type: string
  *                 description: The event logo / custom image.
  *                 example: 3

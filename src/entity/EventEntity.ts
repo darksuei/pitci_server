@@ -54,7 +54,7 @@ export class EventEntity {
   location!: string;
 
   @Column({ nullable: true })
-  logo?: string;
+  image?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

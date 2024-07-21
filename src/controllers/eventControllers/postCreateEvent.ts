@@ -19,7 +19,7 @@ export async function postCreateEvent(req: Request, res: Response) {
       dateTime,
       durationHours,
       durationDays,
-      logo,
+      image,
       registrationLink,
       otherLinks,
       sponsors,
@@ -33,7 +33,7 @@ export async function postCreateEvent(req: Request, res: Response) {
     event.date_time = new Date(dateTime);
     event.duration_hours = durationHours;
     event.duration_days = durationDays;
-    event.logo = logo;
+    event.image = image;
     event.registrationLink = registrationLink;
 
     event = await AppDataSource.manager.save(event);

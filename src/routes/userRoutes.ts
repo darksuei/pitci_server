@@ -11,6 +11,8 @@ import { getBusinesses } from "../controllers/adminControllers/getBusinesses";
 import { getAllEvents } from "../controllers/userControllers/getEvents";
 import { getAlerts } from "../controllers/userControllers/alerts/getAlerts";
 import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patchMarkAlertAsRead";
+import { postScheduleMeeting } from "../controllers/userControllers/postScheduleMeeting";
+import { getScheduledMeetings } from "../controllers/userControllers/getScheduledMeetings";
 
 const router = express.Router();
 
@@ -591,5 +593,98 @@ router.route("/get-alerts").get(authenticate, getAlerts);
  *                   example: Internal Server Error
  */
 router.route("/mark-alerts-as-read").patch(authenticate, patchMarkAlertAsRead);
+
+/**
+ * @openapi
+ * /api/v1/user/schedule-meeting:
+ *   post:
+ *     summary: Schedule a meeting with a business
+ *     tags:
+ *      - user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *                 example: "example description"
+ *               recipientId:
+ *                 type: string
+ *                 example: "uuid()"
+ *               proposedMeetingStart:
+ *                 type: string
+ *                 example: "2022-01-01T00:00:00.000Z"
+ *               proposedMeetingEnd:
+ *                 type: string
+ *                 example: "2022-01-01T01:00:00.000Z"
+ *     responses:
+ *       200:
+ *         description: Meeting schedule successfully submitted to admin for approval.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Meeting schedule successfully submitted to admin for approval.
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Bad request
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal Server Error
+ */
+router.route("/schedule-meeting").post(authenticate, postScheduleMeeting);
+
+/**
+ * @swagger
+ * /api/v1/user/get-scheduled-meetings:
+ *   get:
+ *     summary: Retrieve all user scheduled meetings
+ *     description: Retrieves a list of all scheduled meetings.
+ *     tags:
+ *       - user
+ *     responses:
+ *       200:
+ *         description: A list of meeting schedules
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router.route("/get-scheduled-meetings").get(authenticate, getScheduledMeetings);
 
 export default router;

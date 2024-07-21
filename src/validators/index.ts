@@ -4,7 +4,7 @@ import { ApiError } from "../middlewares/error";
 import * as z from "zod";
 import { VERIFICATION_CODE_EXPIRY_TIME } from "../utils/constants";
 import { PatchPitchStep } from "../types";
-import { ReviewStatusEnum } from "../utils/enums";
+import { GenderEnum, ReviewStatusEnum } from "../utils/enums";
 
 export const ParamIdValidationSchema = z.object({
   id: z.string().uuid("Please enter a valid id"),
@@ -64,6 +64,7 @@ export const PostInitiatePitchValidationSchema = z.object({
   dateOfBirth: z.string().date(),
   nationality: z.string(),
   ethnicity: z.string(),
+  gender: z.enum([GenderEnum.MALE, GenderEnum.FEMALE, GenderEnum.OTHER]),
   requiresDisabilitySupport: z.boolean(),
   disabilitySupportDescription: z.string().optional(),
 });
@@ -126,7 +127,7 @@ export const PostCreateEventValidationSchema = z.object({
   dateTime: z.string().datetime(),
   durationHours: z.number(),
   durationDays: z.number().optional(),
-  logo: z.string().optional(),
+  image: z.string().optional(),
   location: z.string(),
   registrationLink: z.string().optional(),
   otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
@@ -159,6 +160,19 @@ export const PostCreateBusinessValidationSchema = z.object({
   businessOwnerPhone: z.string().optional(),
   website: z.string(),
   logo: z.string().optional(),
+});
+
+export const PostScheduleMeetingValidationSchema = z.object({
+  description: z.string(),
+  recipientId: z.string().uuid(),
+  proposedMeetingStart: z.string().datetime(),
+  proposedMeetingEnd: z.string().datetime(),
+});
+
+export const PatchReviewMeetingScheduleValidationSchema = z.object({
+  meetingId: z.string().uuid(),
+  reviewStatus: z.enum([ReviewStatusEnum.APPROVED, ReviewStatusEnum.DECLINED]),
+  meetingLink: z.string().optional(),
 });
 
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {

@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { MeetingEntity } from "./MeetingEntity";
 
 @Entity("business")
 export class BusinessEntity {
@@ -25,6 +33,9 @@ export class BusinessEntity {
 
   @Column({ nullable: true })
   logo?: string;
+
+  @OneToMany(() => MeetingEntity, (meeting) => meeting.recipient)
+  received_meetings!: MeetingEntity[];
 
   @CreateDateColumn()
   created_at!: Date;
