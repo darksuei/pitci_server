@@ -20,6 +20,9 @@ export class PersonalInformationEntity {
   @Column()
   nationality!: string;
 
+  @Column({ nullable: true })
+  gender!: string;
+
   @Column()
   ethnicity!: string;
 

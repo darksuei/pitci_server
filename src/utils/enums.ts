@@ -23,3 +23,9 @@ export enum ReviewStatusEnum {
   APPROVED = "approved",
   DECLINED = "declined",
 }
+
+export enum GenderEnum {
+  MALE = "Male",
+  FEMALE = "Female",
+  OTHER = "Other",
+}

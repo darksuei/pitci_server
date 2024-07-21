@@ -4,7 +4,7 @@ import { ApiError } from "../middlewares/error";
 import * as z from "zod";
 import { VERIFICATION_CODE_EXPIRY_TIME } from "../utils/constants";
 import { PatchPitchStep } from "../types";
-import { ReviewStatusEnum } from "../utils/enums";
+import { GenderEnum, ReviewStatusEnum } from "../utils/enums";
 
 export const ParamIdValidationSchema = z.object({
   id: z.string().uuid("Please enter a valid id"),
@@ -64,6 +64,7 @@ export const PostInitiatePitchValidationSchema = z.object({
   dateOfBirth: z.string().date(),
   nationality: z.string(),
   ethnicity: z.string(),
+  gender: z.enum([GenderEnum.MALE, GenderEnum.FEMALE, GenderEnum.OTHER]),
   requiresDisabilitySupport: z.boolean(),
   disabilitySupportDescription: z.string().optional(),
 });
