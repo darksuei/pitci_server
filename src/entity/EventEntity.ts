@@ -25,7 +25,7 @@ export class EventEntity {
   description?: string;
 
   @Column({ nullable: true })
-  registrationLink!: string;
+  registrationLink?: string;
 
   @OneToMany(() => LinkEntity, (entity) => entity.event, {
     onDelete: "CASCADE",
@@ -47,8 +47,14 @@ export class EventEntity {
   @Column()
   duration_hours!: Number;
 
+  @Column({ nullable: true, default: 1 })
+  duration_days?: Number;
+
   @Column()
   location!: string;
+
+  @Column({ nullable: true })
+  logo?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

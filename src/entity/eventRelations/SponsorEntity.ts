@@ -10,7 +10,13 @@ export class SponsorEntity {
   name!: string;
 
   @Column({ nullable: true })
-  description!: string;
+  description?: string;
+
+  @Column({ nullable: true })
+  image?: string;
+
+  @Column({ nullable: true })
+  website?: string;
 
   @ManyToOne(() => EventEntity, (entity) => entity.sponsors, { onDelete: "CASCADE" })
   @JoinColumn()
