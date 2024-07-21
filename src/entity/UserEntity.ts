@@ -11,6 +11,7 @@ import {
 import { AuthEntity } from "./AuthEntity";
 import { RoleEnum } from "../utils/enums";
 import { PitchEntity } from "./PitchEntity";
+import { MeetingEntity } from "./MeetingEntity";
 
 @Entity("users")
 export class UserEntity {
@@ -61,6 +62,9 @@ export class UserEntity {
 
   @Column({ default: true })
   event_notification_status!: boolean;
+
+  @OneToMany(() => MeetingEntity, (meeting) => meeting.proposer, { onDelete: "CASCADE" })
+  proposed_meetings!: MeetingEntity[];
 
   @CreateDateColumn()
   created_at?: Date;

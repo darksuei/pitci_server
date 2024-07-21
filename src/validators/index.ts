@@ -162,6 +162,19 @@ export const PostCreateBusinessValidationSchema = z.object({
   logo: z.string().optional(),
 });
 
+export const PostScheduleMeetingValidationSchema = z.object({
+  description: z.string(),
+  recipientId: z.string().uuid(),
+  proposedMeetingStart: z.string().datetime(),
+  proposedMeetingEnd: z.string().datetime(),
+});
+
+export const PatchReviewMeetingScheduleValidationSchema = z.object({
+  meetingId: z.string().uuid(),
+  reviewStatus: z.enum([ReviewStatusEnum.APPROVED, ReviewStatusEnum.DECLINED]),
+  meetingLink: z.string().optional(),
+});
+
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {
   switch (step) {
     case "personal_information":

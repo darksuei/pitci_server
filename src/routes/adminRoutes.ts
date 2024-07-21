@@ -12,6 +12,8 @@ import { patchReviewPitch } from "../controllers/adminControllers/patchReviewPit
 import { postAddAdmin } from "../controllers/adminControllers/postAddAdmin";
 import { getPitch } from "../controllers/adminControllers/getPitch";
 import { postCreateBusiness } from "../controllers/adminControllers/postCreateBusiness";
+import { patchReviewMeetingSchedule } from "../controllers/adminControllers/patchReviewMeetingSchedule";
+import { getAllScheduledMeetings } from "../controllers/adminControllers/getAllScheduledMeetings";
 
 const router = express.Router();
 
@@ -467,5 +469,118 @@ router
 router
   .route("/create-business")
   .post(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), postCreateBusiness);
+
+/**
+ * @swagger
+ * /api/v1/admin/review-meeting-schedule:
+ *   patch:
+ *     summary: Patch review a meeting schedule
+ *     tags:
+ *      - admin
+ *     description: Updates the review status for a specific meeting schedule. Only authorized admins can patch the review status.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               meetingId:
+ *                 type: string
+ *                 description: The id of the meeting schedule
+ *                 example: "12345"
+ *               meetingLink:
+ *                 type: string
+ *                 description: A meeting link where the scheduled meeting would hold
+ *                 example: "https://meeting.link"
+ *               reviewStatus:
+ *                 type: string
+ *                 description: The status to update the pitch to
+ *                 example: "approved"
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Bad Request (Validation Error)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message describing the validation failure
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating unauthorized access
+ *       404:
+ *         description: Not Found (Pitch not found)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating the pitch with the provided ID was not found
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating an unexpected internal server error
+ */
+router
+  .route("/review-meeting-schedule")
+  .patch(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), patchReviewMeetingSchedule);
+
+/**
+ * @swagger
+ * /api/v1/admin/get-all-scheduled-meetings:
+ *   get:
+ *     summary: Retrieve all scheduled meetings in the system
+ *     description: Retrieves a list of all scheduled meetings.
+ *     tags:
+ *       - admin
+ *     responses:
+ *       200:
+ *         description: A list of meeting schedules
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router
+  .route("/get-all-scheduled-meetings")
+  .get(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), getAllScheduledMeetings);
 
 export default router;
