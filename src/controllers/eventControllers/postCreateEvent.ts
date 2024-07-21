@@ -12,8 +12,18 @@ export async function postCreateEvent(req: Request, res: Response) {
   try {
     validateRequest(PostCreateEventValidationSchema, req.body);
 
-    const { title, description, location, dateTime, durationHours, registrationLink, otherLinks, sponsors } =
-      req.body as z.infer<typeof PostCreateEventValidationSchema>;
+    const {
+      title,
+      description,
+      location,
+      dateTime,
+      durationHours,
+      durationDays,
+      logo,
+      registrationLink,
+      otherLinks,
+      sponsors,
+    } = req.body as z.infer<typeof PostCreateEventValidationSchema>;
 
     let event = new EventEntity();
     event.admin_id = req.user!.id;
@@ -22,7 +32,9 @@ export async function postCreateEvent(req: Request, res: Response) {
     event.location = location;
     event.date_time = new Date(dateTime);
     event.duration_hours = durationHours;
-    registrationLink && (event.registrationLink = registrationLink);
+    event.duration_days = durationDays;
+    event.logo = logo;
+    event.registrationLink = registrationLink;
 
     event = await AppDataSource.manager.save(event);
 
@@ -42,7 +54,9 @@ export async function postCreateEvent(req: Request, res: Response) {
         sponsors.map(async (sponsor) => {
           const sponsorEntity = new SponsorEntity();
           sponsorEntity.name = sponsor.name;
-          sponsor.description && (sponsorEntity.description = sponsor.description);
+          sponsorEntity.description = sponsor.description;
+          sponsorEntity.image = sponsor.image;
+          sponsorEntity.website = sponsor.website;
           sponsorEntity.event = event;
           return await AppDataSource.manager.save(sponsorEntity);
         })

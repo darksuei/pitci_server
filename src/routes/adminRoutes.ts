@@ -11,6 +11,7 @@ import { getPitches } from "../controllers/adminControllers/getPitches";
 import { patchReviewPitch } from "../controllers/adminControllers/patchReviewPitch";
 import { postAddAdmin } from "../controllers/adminControllers/postAddAdmin";
 import { getPitch } from "../controllers/adminControllers/getPitch";
+import { postCreateBusiness } from "../controllers/adminControllers/postCreateBusiness";
 
 const router = express.Router();
 
@@ -387,5 +388,84 @@ router
 router
   .route("/add-admin")
   .post(authenticate, requireDesktopClient, authorization(RoleEnum.SUPER_ADMIN), postAddAdmin);
+
+/**
+ * @swagger
+ * /api/v1/admin/create-business:
+ *   post:
+ *     summary: Add a new business
+ *     description: Adds a new business to the system.
+ *     tags:
+ *       - admin
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               businessName:
+ *                 type: string
+ *                 description: The name of the business.
+ *                 example: "Example Business"
+ *               businessDescription:
+ *                 type: string
+ *                 description: The description of the business.
+ *                 example: "Example Business is a ...."
+ *               businessOwnerName:
+ *                 type: string
+ *                 description: The name of the owner of the business.
+ *                 example: "Dr. John Doe"
+ *               businessOwnerEmail:
+ *                 type: string
+ *                 description: The email of the owner of the business.
+ *                 example: "john@doe.com"
+ *               businessOwnerPhone:
+ *                 type: string
+ *                 description: The phone of the owner of the business.
+ *                 example: "+1234567890"
+ *               website:
+ *                 type: string
+ *                 description: The business website.
+ *                 example: "https://examplebusiness.com"
+ *               logo:
+ *                 type: string
+ *                 description: The business logo (url/base 64).
+ *                 example: "https://example.com/logo.png"
+ *     responses:
+ *       200:
+ *         description: Business created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Business created successfully"
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Duplicate business name."
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router
+  .route("/create-business")
+  .post(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), postCreateBusiness);
 
 export default router;

@@ -5,7 +5,6 @@ import * as z from "zod";
 import { AppDataSource } from "../../database/dataSource";
 import { PitchEntity } from "../../entity/PitchEntity";
 import { ApiError } from "../../middlewares/error";
-import { createBusiness } from "../../utils/business";
 import AlertService from "../../services/AlertService";
 import { ReviewStatusEnum } from "../../utils/enums";
 
@@ -37,8 +36,6 @@ export async function patchReviewPitch(req: Request, res: Response) {
     pitch.review.review_date = new Date();
 
     await AppDataSource.manager.save(pitch);
-
-    await createBusiness(pitch, req.user!);
 
     switch (reviewStatus) {
       case ReviewStatusEnum.APPROVED:

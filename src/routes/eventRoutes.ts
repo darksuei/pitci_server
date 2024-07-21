@@ -46,6 +46,14 @@ const router = express.Router();
  *                 type: number
  *                 description: The duration of the event in hours
  *                 example: 3
+ *               durationDays:
+ *                 type: number
+ *                 description: The duration of the event in days
+ *                 example: 1
+ *               logo:
+ *                 type: string
+ *                 description: The event logo / custom image.
+ *                 example: 3
  *               registrationLink:
  *                 type: string
  *                 description: The registration link for the event
@@ -53,7 +61,7 @@ const router = express.Router();
  *               sponsors:
  *                 type: array
  *                 description: A list of sponsors for the event
- *                 example: [{ name: "Sponsor 1", description: "Description 1" }]
+ *                 example: [{ name: "Sponsor 1", description: "Description 1", image: "https://example.com/logo1", website: "https://example.com/sponsor1" }]
  *               otherLinks:
  *                 type: array
  *                 description: A list of other links for the event

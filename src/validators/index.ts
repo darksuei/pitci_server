@@ -125,6 +125,8 @@ export const PostCreateEventValidationSchema = z.object({
   description: z.string(),
   dateTime: z.string().datetime(),
   durationHours: z.number(),
+  durationDays: z.number().optional(),
+  logo: z.string().optional(),
   location: z.string(),
   registrationLink: z.string().optional(),
   otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
@@ -133,6 +135,8 @@ export const PostCreateEventValidationSchema = z.object({
       z.object({
         name: z.string(),
         description: z.string().optional(),
+        image: z.string().optional(),
+        website: z.string().optional(),
       })
     )
     .optional(),
@@ -145,6 +149,16 @@ export const PostAddAdminValidationSchema = z.object({
 export const PatchMarkAlertAsReadValidationSchema = z.object({
   alertIds: z.array(z.string().uuid()).optional(),
   markAllAsRead: z.boolean().optional(),
+});
+
+export const PostCreateBusinessValidationSchema = z.object({
+  businessName: z.string(),
+  businessDescription: z.string(),
+  businessOwnerName: z.string().optional(),
+  businessOwnerEmail: z.string().email().optional(),
+  businessOwnerPhone: z.string().optional(),
+  website: z.string(),
+  logo: z.string().optional(),
 });
 
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {
