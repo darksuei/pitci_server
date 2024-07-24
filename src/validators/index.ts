@@ -4,7 +4,7 @@ import { ApiError } from "../middlewares/error";
 import * as z from "zod";
 import { VERIFICATION_CODE_EXPIRY_TIME } from "../utils/constants";
 import { PatchPitchStep } from "../types";
-import { GenderEnum, ReviewStatusEnum } from "../utils/enums";
+import { AwardStatusEnum, GenderEnum, NomineeTypeEnum, ReviewStatusEnum } from "../utils/enums";
 
 export const ParamIdValidationSchema = z.object({
   id: z.string().uuid("Please enter a valid id"),
@@ -165,14 +165,39 @@ export const PostCreateBusinessValidationSchema = z.object({
 export const PostScheduleMeetingValidationSchema = z.object({
   description: z.string(),
   recipientId: z.string().uuid(),
-  proposedMeetingStart: z.string().datetime(),
-  proposedMeetingEnd: z.string().datetime(),
 });
 
 export const PatchReviewMeetingScheduleValidationSchema = z.object({
   meetingId: z.string().uuid(),
   reviewStatus: z.enum([ReviewStatusEnum.APPROVED, ReviewStatusEnum.DECLINED]),
   meetingLink: z.string().optional(),
+});
+
+export const PostCreateAwardValidationSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
+export const PostNominateValidationSchema = z.object({
+  awardId: z.string().uuid(),
+  nomineeId: z.string().uuid(),
+  nomineeType: z.enum([NomineeTypeEnum.USER, NomineeTypeEnum.BUSINESS, NomineeTypeEnum.PITCH]),
+  reason: z.string().optional(),
+});
+
+export const PatchVoteForNomineeValidationSchema = z.object({
+  nomineeId: z.string().uuid(),
+  awardId: z.string().uuid(),
+});
+
+export const PatchAwardStatusValidationSchema = z.object({
+  awardId: z.string().uuid(),
+  status: z.enum([
+    AwardStatusEnum.NOT_STARTED,
+    AwardStatusEnum.NOMINATIONS_OPEN,
+    AwardStatusEnum.VOTING_OPEN,
+    AwardStatusEnum.CLOSED,
+  ]),
 });
 
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {

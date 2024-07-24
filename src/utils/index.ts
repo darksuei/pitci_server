@@ -1,7 +1,10 @@
 import logger from "../config/logger.config";
 import { JWT_SECRET } from "./constants";
 import jwt from "jsonwebtoken";
-import { RoleEnum } from "./enums";
+import { NomineeTypeEnum, RoleEnum } from "./enums";
+import { UserEntity } from "../entity/UserEntity";
+import { BusinessEntity } from "../entity/BusinessEntity";
+import { PitchEntity } from "../entity/PitchEntity";
 
 export function generateVerificationCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -30,4 +33,17 @@ export function verifyToken(token: string) {
 
 export function checkIfAdmin(role: RoleEnum) {
   return role === RoleEnum.ADMIN || role === RoleEnum.SUPER_ADMIN;
+}
+
+export function getEntityNameFromType(type: NomineeTypeEnum) {
+  switch (type) {
+    case NomineeTypeEnum.USER:
+      return UserEntity;
+    case NomineeTypeEnum.BUSINESS:
+      return BusinessEntity;
+    case NomineeTypeEnum.PITCH:
+      return PitchEntity;
+    default:
+      return UserEntity;
+  }
 }

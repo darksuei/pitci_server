@@ -6,6 +6,7 @@ import pitchRoutes from "../routes/pitchRoutes";
 import adminRoutes from "../routes/adminRoutes";
 import internalRoutes from "../routes/internalRoutes";
 import eventRoutes from "../routes/eventRoutes";
+import awardRoutes from "../routes/awardRoutes";
 
 export default function setupRoutes(app: Application): void {
   app.use("/api/v1/health", healthCheckRoute);
@@ -14,5 +15,6 @@ export default function setupRoutes(app: Application): void {
   app.use("/api/v1/pitch", pitchRoutes);
   app.use("/api/v1/admin", adminRoutes);
   app.use("/api/v1/event", eventRoutes);
+  app.use("/api/v1/award", awardRoutes);
   app.use("/api/v1/internal", internalRoutes);
 }

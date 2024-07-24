@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,6 +15,7 @@ import { CompetitionQuestionsEntity } from "./pitchRelations/CompetitionQuestion
 import { TechnicalAgreementEntity } from "./pitchRelations/TechnicalAgreementEntity";
 import { UserEntity } from "./UserEntity";
 import { ReviewEntity } from "./ReviewEntity";
+import { AwardNomineesEntity } from "./awardRelations/AwardNomineeesEntity";
 
 @Entity("pitch")
 export class PitchEntity {
@@ -46,6 +48,10 @@ export class PitchEntity {
   @OneToOne(() => ReviewEntity, { cascade: true })
   @JoinColumn()
   review!: ReviewEntity;
+
+  @OneToMany(() => AwardNomineesEntity, (i) => i.pitch_nominee)
+  @JoinColumn()
+  nominated_for!: AwardNomineesEntity;
 
   @CreateDateColumn()
   created_at!: Date;

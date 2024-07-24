@@ -28,12 +28,6 @@ export class MeetingEntity {
   @JoinColumn({ name: "recipient_id" })
   recipient!: BusinessEntity;
 
-  @Column()
-  proposed_meeting_start!: Date;
-
-  @Column()
-  proposed_meeting_end!: Date;
-
   @Column({ nullable: true })
   meeting_link?: string;
 

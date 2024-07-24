@@ -13,9 +13,7 @@ export async function postScheduleMeeting(req: Request, res: Response) {
   try {
     validateRequest(PostScheduleMeetingValidationSchema, req.body);
 
-    const { description, recipientId, proposedMeetingStart, proposedMeetingEnd } = req.body as z.infer<
-      typeof PostScheduleMeetingValidationSchema
-    >;
+    const { description, recipientId } = req.body as z.infer<typeof PostScheduleMeetingValidationSchema>;
 
     const proposer = req.user!;
 
@@ -36,8 +34,6 @@ export async function postScheduleMeeting(req: Request, res: Response) {
     meeting.description = description;
     meeting.proposer = proposer;
     meeting.recipient = recipient;
-    meeting.proposed_meeting_start = new Date(proposedMeetingStart);
-    meeting.proposed_meeting_end = new Date(proposedMeetingEnd);
     meeting.review = review;
 
     await AppDataSource.manager.save(meeting);

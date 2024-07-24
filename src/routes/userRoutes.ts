@@ -13,6 +13,7 @@ import { getAlerts } from "../controllers/userControllers/alerts/getAlerts";
 import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patchMarkAlertAsRead";
 import { postScheduleMeeting } from "../controllers/userControllers/postScheduleMeeting";
 import { getScheduledMeetings } from "../controllers/userControllers/getScheduledMeetings";
+import { getAwardsUser } from "../controllers/awardControllers/getAwards";
 
 const router = express.Router();
 
@@ -686,5 +687,44 @@ router.route("/schedule-meeting").post(authenticate, postScheduleMeeting);
  *                   example: "Internal Server Error"
  */
 router.route("/get-scheduled-meetings").get(authenticate, getScheduledMeetings);
+
+/**
+ * @swagger
+ * /api/v1/user/get-awards:
+ *   get:
+ *     summary: Retrieve all awards
+ *     description: Retrieves a list of all awards.
+ *     tags:
+ *       - user
+ *     responses:
+ *       200:
+ *         description: A list of awards
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   title:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router.route("/get-awards").get(authenticate, getAwardsUser);
 
 export default router;
