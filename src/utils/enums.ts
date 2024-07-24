@@ -29,3 +29,16 @@ export enum GenderEnum {
   FEMALE = "Female",
   OTHER = "Other",
 }
+
+export enum AwardStatusEnum {
+  NOT_STARTED = "not-started",
+  NOMINATIONS_OPEN = "nominations-open",
+  VOTING_OPEN = "voting-open",
+  CLOSED = "closed",
+}
+
+export enum NomineeTypeEnum {
+  USER = "user",
+  BUSINESS = "business",
+  PITCH = "pitch",
+}

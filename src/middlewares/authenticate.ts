@@ -24,6 +24,8 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
         "pitch.professional_background",
         "pitch.competition_questions",
         "pitch.technical_agreement",
+        "nominated_for",
+        "nominated_for.award",
       ],
     });
 

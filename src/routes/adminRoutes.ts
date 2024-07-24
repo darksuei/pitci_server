@@ -14,6 +14,7 @@ import { getPitch } from "../controllers/adminControllers/getPitch";
 import { postCreateBusiness } from "../controllers/adminControllers/postCreateBusiness";
 import { patchReviewMeetingSchedule } from "../controllers/adminControllers/patchReviewMeetingSchedule";
 import { getAllScheduledMeetings } from "../controllers/adminControllers/getAllScheduledMeetings";
+import { getAwardsAdmin } from "../controllers/awardControllers/getAwards";
 
 const router = express.Router();
 
@@ -582,5 +583,46 @@ router
 router
   .route("/get-all-scheduled-meetings")
   .get(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), getAllScheduledMeetings);
+
+/**
+ * @swagger
+ * /api/v1/admin/get-awards:
+ *   get:
+ *     summary: Retrieve all awards
+ *     description: Retrieves a list of all awards.
+ *     tags:
+ *       - admin
+ *     responses:
+ *       200:
+ *         description: A list of awards
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   title:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router
+  .route("/get-awards")
+  .get(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), getAwardsAdmin);
 
 export default router;

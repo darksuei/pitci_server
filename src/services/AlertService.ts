@@ -12,6 +12,7 @@ class AlertService {
     ["pitchRejected", "Pitch Rejected"],
     ["phoneNumberChanged", "Phone Number Changed"],
     ["passwordChanged", "Password Changed"],
+    ["awardNomination", "Award Nomination"],
   ]);
 
   getAlertMessage(alertType: typeof this.alerts extends Map<infer K, any> ? K : never, main?: string) {
@@ -26,6 +27,8 @@ class AlertService {
         return `Your phone number has successfully been updated!`;
       case "passwordChanged":
         return `Your account password has successfully been updated!`;
+      case "awardNomination":
+        return `You have been nominated for the award - ${main}!`;
       default:
         return "";
     }
@@ -95,6 +98,16 @@ class AlertService {
     alert.userId = userId;
     alert.title = this.alerts.get("passwordChanged")!;
     alert.message = this.getAlertMessage("passwordChanged");
+    await AppDataSource.manager.save(alert);
+  }
+
+  async awardNomination(userId: string, awardName: string, isNotificationEnabled: boolean) {
+    if (!isNotificationEnabled) return;
+
+    const alert = new AlertEntity();
+    alert.userId = userId;
+    alert.title = this.alerts.get("awardNomination")!;
+    alert.message = this.getAlertMessage("awardNomination", awardName);
     await AppDataSource.manager.save(alert);
   }
 }

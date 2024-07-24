@@ -96,7 +96,7 @@ router.route("/register").post(postRegister);
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "user@example.com"
+ *                 example: "chrisraphael576@gmail.com"
  *               password:
  *                 type: string
  *                 format: password

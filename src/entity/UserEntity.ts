@@ -12,6 +12,8 @@ import { AuthEntity } from "./AuthEntity";
 import { RoleEnum } from "../utils/enums";
 import { PitchEntity } from "./PitchEntity";
 import { MeetingEntity } from "./MeetingEntity";
+import { VoteEntity } from "./awardRelations/VoteEntity";
+import { AwardNomineesEntity } from "./awardRelations/AwardNomineeesEntity";
 
 @Entity("users")
 export class UserEntity {
@@ -65,6 +67,16 @@ export class UserEntity {
 
   @OneToMany(() => MeetingEntity, (meeting) => meeting.proposer, { onDelete: "CASCADE" })
   proposed_meetings!: MeetingEntity[];
+
+  @OneToMany(() => VoteEntity, (vote) => vote.user, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn()
+  votes!: VoteEntity[];
+
+  @OneToMany(() => AwardNomineesEntity, (i) => i.user_nominee)
+  @JoinColumn()
+  nominated_for!: AwardNomineesEntity[];
 
   @CreateDateColumn()
   created_at?: Date;
