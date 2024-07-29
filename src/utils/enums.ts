@@ -12,9 +12,9 @@ export enum RoleEnum {
 }
 
 export enum NovuTriggersEnum {
-  EMAIL_VERIFICATION = "email-verification",
-  FORGOT_PASSWORD = "forgot-password",
-  PHONE_VERIFICATION = "phone-verification",
+  EMAIL_VERIFICATION = "pitci-email-verification",
+  FORGOT_PASSWORD = "pitci-forgot-password",
+  PHONE_VERIFICATION = "pitci-phone-verification",
 }
 
 export enum ReviewStatusEnum {
