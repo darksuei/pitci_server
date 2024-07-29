@@ -7,7 +7,9 @@
     "clean": "rimraf dist",
     "build": "tsc",
     "dev": "NODE_ENV=development nodemon --exec ts-node src/index.ts",
-    "start": "NODE_ENV=production npm run clean && tsc && node dist/index.js"
+    "node-start": "NODE_ENV=production npm run clean && tsc && node dist/index.js",
+    "pm2-start": "NODE_ENV=production npm run clean && tsc && pm2 start dist/index.js --name pitci -i 2",
+    "pm2-dev": "NODE_ENV=development npm run clean && tsc && pm2 start dist/index.js --name pitci --watch --no-daemon"
   },
   "dependencies": {
     "@novu/node": "^0.24.2",
@@ -20,6 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.11.5",
+    "pm2": "^5.4.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20",
