@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { AwardNomineesEntity } from "./AwardNomineeesEntity";
-import { AwardStatusEnum, NomineeTypeEnum } from "../../utils/enums";
+import { AwardStatusEnum } from "../../utils/enums";
 
 @Entity("awards")
 export class AwardsEntity {

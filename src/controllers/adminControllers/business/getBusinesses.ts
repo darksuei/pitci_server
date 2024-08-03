@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { AppDataSource } from "../../database/dataSource";
-import { BusinessEntity } from "../../entity/BusinessEntity";
+import { AppDataSource } from "../../../database/dataSource";
+import { BusinessEntity } from "../../../entity/BusinessEntity";
 
 export async function getBusinesses(_req: Request, res: Response) {
   try {

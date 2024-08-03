@@ -20,7 +20,9 @@ export class VoteEntity {
   @JoinColumn()
   user!: UserEntity;
 
-  @ManyToOne(() => AwardNomineesEntity, (nominee) => nominee.votes)
+  @ManyToOne(() => AwardNomineesEntity, (nominee) => nominee.votes, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "vote" })
   nominee!: AwardNomineesEntity;
 

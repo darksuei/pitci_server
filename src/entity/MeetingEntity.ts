@@ -20,18 +20,18 @@ export class MeetingEntity {
   @Column()
   description!: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.proposed_meetings)
+  @ManyToOne(() => UserEntity, (user) => user.proposed_meetings, { onDelete: "CASCADE" })
   @JoinColumn({ name: "proposer_id" })
   proposer!: UserEntity;
 
-  @ManyToOne(() => BusinessEntity, (business) => business.received_meetings)
+  @ManyToOne(() => BusinessEntity, (business) => business.received_meetings, { onDelete: "CASCADE" })
   @JoinColumn({ name: "recipient_id" })
   recipient!: BusinessEntity;
 
   @Column({ nullable: true })
   meeting_link?: string;
 
-  @OneToOne(() => ReviewEntity, { cascade: true })
+  @OneToOne(() => ReviewEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   review!: ReviewEntity;
 

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { PostCreateBusinessValidationSchema, validateRequest } from "../../validators";
+import { PostCreateBusinessValidationSchema, validateRequest } from "../../../validators";
 import * as z from "zod";
-import { BusinessEntity } from "../../entity/BusinessEntity";
-import { AppDataSource } from "../../database/dataSource";
-import { ApiError } from "../../middlewares/error";
+import { BusinessEntity } from "../../../entity/BusinessEntity";
+import { AppDataSource } from "../../../database/dataSource";
+import { ApiError } from "../../../middlewares/error";
 
 export async function postCreateBusiness(req: Request, res: Response) {
   try {

@@ -7,13 +7,13 @@ import { patchUserPassword } from "../controllers/userControllers/changePassword
 import { postRequestPhoneNumberChange } from "../controllers/userControllers/addPhoneNumber/postRequestPhoneNumberChange";
 import { patchPhoneNumber } from "../controllers/userControllers/addPhoneNumber/patchPhoneNumber";
 import { patchNotificationSettings } from "../controllers/userControllers/patchNotificationSettings";
-import { getBusinesses } from "../controllers/adminControllers/getBusinesses";
+import { getBusinesses } from "../controllers/adminControllers/business/getBusinesses";
 import { getAllEvents } from "../controllers/userControllers/getEvents";
 import { getAlerts } from "../controllers/userControllers/alerts/getAlerts";
 import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patchMarkAlertAsRead";
 import { postScheduleMeeting } from "../controllers/userControllers/postScheduleMeeting";
 import { getScheduledMeetings } from "../controllers/userControllers/getScheduledMeetings";
-import { getAwardsUser } from "../controllers/awardControllers/getAwards";
+import { getSearchByQueryString } from "../controllers/userControllers/getSearchByQueryString";
 
 const router = express.Router();
 
@@ -615,12 +615,6 @@ router.route("/mark-alerts-as-read").patch(authenticate, patchMarkAlertAsRead);
  *               recipientId:
  *                 type: string
  *                 example: "uuid()"
- *               proposedMeetingStart:
- *                 type: string
- *                 example: "2022-01-01T00:00:00.000Z"
- *               proposedMeetingEnd:
- *                 type: string
- *                 example: "2022-01-01T01:00:00.000Z"
  *     responses:
  *       200:
  *         description: Meeting schedule successfully submitted to admin for approval.
@@ -690,30 +684,32 @@ router.route("/get-scheduled-meetings").get(authenticate, getScheduledMeetings);
 
 /**
  * @swagger
- * /api/v1/user/get-awards:
+ * /api/v1/user/get-search-by-query-string:
  *   get:
- *     summary: Retrieve all awards
- *     description: Retrieves a list of all awards.
+ *     summary: Get results by searching
+ *     parameters:
+ *      - name: type
+ *        in: query
+ *        description: query type - user | business | pitch
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - name: query
+ *        in: query
+ *        description: search string
+ *        required: true
+ *        schema:
+ *          type: string
  *     tags:
- *       - user
+ *      - user
+ *     description: Retrieves a list of results matching a given search query.
  *     responses:
  *       200:
- *         description: A list of awards
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
  *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   title:
- *                     type: string
- *                   description:
- *                     type: string
- *                   status:
- *                     type: string
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -723,8 +719,8 @@ router.route("/get-scheduled-meetings").get(authenticate, getScheduledMeetings);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Internal Server Error"
+ *                   description: Error message
  */
-router.route("/get-awards").get(authenticate, getAwardsUser);
+router.route("/get-search-by-query-string").get(authenticate, getSearchByQueryString);
 
 export default router;

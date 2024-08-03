@@ -8,6 +8,7 @@ import { MeetingEntity } from "../../entity/MeetingEntity";
 import { ReviewEntity } from "../../entity/ReviewEntity";
 import { ReviewStatusEnum } from "../../utils/enums";
 import { BusinessEntity } from "../../entity/BusinessEntity";
+import { devEnvironment } from "../../config/readEnv.config";
 
 export async function postScheduleMeeting(req: Request, res: Response) {
   try {
@@ -16,6 +17,9 @@ export async function postScheduleMeeting(req: Request, res: Response) {
     const { description, recipientId } = req.body as z.infer<typeof PostScheduleMeetingValidationSchema>;
 
     const proposer = req.user!;
+
+    if (!devEnvironment() && proposer.id === recipientId)
+      throw new ApiError(httpStatus.BAD_REQUEST, "You cannot schedule a meeting with yourself");
 
     const recipient = await AppDataSource.manager.findOne(BusinessEntity, {
       where: { id: recipientId },

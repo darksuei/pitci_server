@@ -7,6 +7,11 @@ import { deleteEvent } from "../controllers/eventControllers/deleteEvent";
 import { getAllEvents } from "../controllers/userControllers/getEvents";
 import { postCreateEvent } from "../controllers/eventControllers/postCreateEvent";
 import { getEventById } from "../controllers/eventControllers/getEventById";
+// import multer from "multer";
+
+// const storage = multer.memoryStorage();
+
+// const upload = multer({ storage: storage });
 
 const router = express.Router();
 
@@ -29,6 +34,10 @@ const router = express.Router();
  *                 type: string
  *                 description: The title of the event
  *                 example: "Annual Meeting"
+ *               day:
+ *                 type: string
+ *                 description: The current day
+ *                 example: "Day 1"
  *               description:
  *                 type: string
  *                 description: The description of the event
@@ -46,10 +55,6 @@ const router = express.Router();
  *                 type: number
  *                 description: The duration of the event in hours
  *                 example: 3
- *               durationDays:
- *                 type: number
- *                 description: The duration of the event in days
- *                 example: 1
  *               image:
  *                 type: string
  *                 description: The event logo / custom image.
@@ -180,7 +185,7 @@ router.route("/get-all-events").get(getAllEvents);
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the event to delete
+ *         description: The ID of the event to retrieve
  *     responses:
  *       200:
  *         description: Event retrieved successfully

@@ -18,21 +18,21 @@ export async function postCreateEvent(req: Request, res: Response) {
       location,
       dateTime,
       durationHours,
-      durationDays,
       image,
       registrationLink,
       otherLinks,
       sponsors,
+      day,
     } = req.body as z.infer<typeof PostCreateEventValidationSchema>;
 
     let event = new EventEntity();
     event.admin_id = req.user!.id;
     event.title = title;
+    event.day = day;
     event.description = description;
     event.location = location;
     event.date_time = new Date(dateTime);
     event.duration_hours = durationHours;
-    event.duration_days = durationDays;
     event.image = image;
     event.registrationLink = registrationLink;
 

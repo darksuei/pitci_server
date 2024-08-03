@@ -8,6 +8,8 @@ import { getNominees } from "../controllers/awardControllers/getNominees";
 import { postNominate } from "../controllers/awardControllers/postNominate";
 import { patchAwardStatus } from "../controllers/awardControllers/patchAwardStatus";
 import { patchVoteForNominee } from "../controllers/awardControllers/patchVoteForNominee";
+import { deleteAward } from "../controllers/awardControllers/deleteAward";
+import { getAwards } from "../controllers/awardControllers/getAwards";
 
 const router = express.Router();
 
@@ -314,5 +316,95 @@ router.route("/vote-for-nominee").post(authenticate, patchVoteForNominee);
  *                   example: "Internal Server Error"
  */
 router.route("/get-award-nominees/:id").get(authenticate, getNominees);
+
+/**
+ * @swagger
+ * /api/v1/award/delete-award/{id}:
+ *   delete:
+ *     summary: Delete an award (ADMIN ONLY)
+ *     description: Deletes an award by its ID.
+ *     tags:
+ *       - award
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the award to delete
+ *     responses:
+ *       200:
+ *         description: Award deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Award deleted successfully"
+ *       404:
+ *         description: Award not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Award not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router
+  .route("/delete-award/:id")
+  .delete(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), deleteAward);
+
+/**
+ * @swagger
+ * /api/v1/award/get-awards:
+ *   get:
+ *     summary: Retrieve all awards
+ *     description: Retrieves a list of all awards.
+ *     tags:
+ *       - award
+ *     responses:
+ *       200:
+ *         description: A list of awards
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   title:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router.route("/get-awards").get(authenticate, getAwards);
 
 export default router;
