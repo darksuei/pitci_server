@@ -6,15 +6,15 @@ import { authorization } from "../middlewares/authorization";
 import { RoleEnum } from "../utils/enums";
 import { getUsers } from "../controllers/adminControllers/getUsers";
 import { getUser } from "../controllers/userControllers/getUser";
-import { getBusinesses } from "../controllers/adminControllers/getBusinesses";
+import { getBusinesses } from "../controllers/adminControllers/business/getBusinesses";
 import { getPitches } from "../controllers/adminControllers/getPitches";
 import { patchReviewPitch } from "../controllers/adminControllers/patchReviewPitch";
 import { postAddAdmin } from "../controllers/adminControllers/postAddAdmin";
 import { getPitch } from "../controllers/adminControllers/getPitch";
-import { postCreateBusiness } from "../controllers/adminControllers/postCreateBusiness";
+import { postCreateBusiness } from "../controllers/adminControllers/business/postCreateBusiness";
 import { patchReviewMeetingSchedule } from "../controllers/adminControllers/patchReviewMeetingSchedule";
 import { getAllScheduledMeetings } from "../controllers/adminControllers/getAllScheduledMeetings";
-import { getAwardsAdmin } from "../controllers/awardControllers/getAwards";
+import { deleteBusiness } from "../controllers/adminControllers/business/deleteBusiness";
 
 const router = express.Router();
 
@@ -586,30 +586,40 @@ router
 
 /**
  * @swagger
- * /api/v1/admin/get-awards:
- *   get:
- *     summary: Retrieve all awards
- *     description: Retrieves a list of all awards.
+ * /api/v1/admin/delete-business/{id}:
+ *   delete:
+ *     summary: Delete a business
+ *     description: Deletes an business by its ID.
  *     tags:
  *       - admin
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the business to delete
  *     responses:
  *       200:
- *         description: A list of awards
+ *         description: Business deleted successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   title:
- *                     type: string
- *                   description:
- *                     type: string
- *                   status:
- *                     type: string
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Business deleted successfully"
+ *       404:
+ *         description: Business not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Business not found"
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -622,7 +632,7 @@ router
  *                   example: "Internal Server Error"
  */
 router
-  .route("/get-awards")
-  .get(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), getAwardsAdmin);
+  .route("/delete-business/:id")
+  .delete(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), deleteBusiness);
 
 export default router;

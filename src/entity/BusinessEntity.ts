@@ -36,10 +36,14 @@ export class BusinessEntity {
   @Column({ nullable: true })
   logo?: string;
 
-  @OneToMany(() => MeetingEntity, (meeting) => meeting.recipient)
+  @OneToMany(() => MeetingEntity, (meeting) => meeting.recipient, {
+    onDelete: "CASCADE",
+  })
   received_meetings!: MeetingEntity[];
 
-  @OneToMany(() => AwardNomineesEntity, (i) => i.business_nominee)
+  @OneToMany(() => AwardNomineesEntity, (i) => i.business_nominee, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   nominated_for!: AwardNomineesEntity;
 

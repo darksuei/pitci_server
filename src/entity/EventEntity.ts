@@ -21,6 +21,9 @@ export class EventEntity {
   @Column()
   title!: string;
 
+  @Column()
+  day?: string;
+
   @Column({ nullable: true })
   description?: string;
 
@@ -44,11 +47,8 @@ export class EventEntity {
   @Column()
   date_time!: Date;
 
-  @Column()
-  duration_hours!: Number;
-
-  @Column({ nullable: true, default: 1 })
-  duration_days?: Number;
+  @Column({ nullable: true })
+  duration_hours?: Number;
 
   @Column()
   location!: string;

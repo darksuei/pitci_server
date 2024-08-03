@@ -22,19 +22,19 @@ export class PitchEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @OneToOne(() => PersonalInformationEntity, { cascade: true })
+  @OneToOne(() => PersonalInformationEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   personal_information!: PersonalInformationEntity;
 
-  @OneToOne(() => ProfessionalBackgroundEntity, { cascade: true })
+  @OneToOne(() => ProfessionalBackgroundEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   professional_background!: ProfessionalBackgroundEntity;
 
-  @OneToOne(() => CompetitionQuestionsEntity, { cascade: true })
+  @OneToOne(() => CompetitionQuestionsEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   competition_questions!: CompetitionQuestionsEntity;
 
-  @OneToOne(() => TechnicalAgreementEntity, { cascade: true })
+  @OneToOne(() => TechnicalAgreementEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   technical_agreement!: TechnicalAgreementEntity;
 
@@ -45,11 +45,11 @@ export class PitchEntity {
   @Column({ default: false })
   is_submitted!: boolean;
 
-  @OneToOne(() => ReviewEntity, { cascade: true })
+  @OneToOne(() => ReviewEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   review!: ReviewEntity;
 
-  @OneToMany(() => AwardNomineesEntity, (i) => i.pitch_nominee)
+  @OneToMany(() => AwardNomineesEntity, (i) => i.pitch_nominee, { onDelete: "CASCADE" })
   @JoinColumn()
   nominated_for!: AwardNomineesEntity;
 

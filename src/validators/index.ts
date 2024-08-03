@@ -125,12 +125,12 @@ export const PostCreateEventValidationSchema = z.object({
   title: z.string(),
   description: z.string(),
   dateTime: z.string().datetime(),
-  durationHours: z.number(),
-  durationDays: z.number().optional(),
+  durationHours: z.number().optional(),
   image: z.string().optional(),
   location: z.string(),
   registrationLink: z.string().optional(),
   otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
+  day: z.string().optional(),
   sponsors: z
     .array(
       z.object({
