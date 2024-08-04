@@ -125,22 +125,23 @@ export const PostCreateEventValidationSchema = z.object({
   title: z.string(),
   description: z.string(),
   dateTime: z.string().datetime(),
-  durationHours: z.number().optional(),
-  image: z.string().optional(),
+  durationHours: z.string().optional(),
   location: z.string(),
   registrationLink: z.string().optional(),
-  otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
   day: z.string().optional(),
-  sponsors: z
-    .array(
-      z.object({
-        name: z.string(),
-        description: z.string().optional(),
-        image: z.string().optional(),
-        website: z.string().optional(),
-      })
-    )
-    .optional(),
+  otherLinks: z.string().optional(),
+  sponsors: z.string().optional(),
+  // otherLinks: z.array(z.object({ title: z.string().optional(), url: z.string() })).optional(),
+  // sponsors: z
+  //   .array(
+  //     z.object({
+  //       name: z.string(),
+  //       description: z.string().optional(),
+  //       image: z.string().optional(),
+  //       website: z.string().optional(),
+  //     })
+  //   )
+  //   .optional(),
 });
 
 export const PostAddAdminValidationSchema = z.object({

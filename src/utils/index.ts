@@ -1,10 +1,11 @@
 import logger from "../config/logger.config";
-import { JWT_SECRET } from "./constants";
+import { JWT_SECRET, SALT_ROUNDS } from "./constants";
 import jwt from "jsonwebtoken";
 import { NomineeTypeEnum, RoleEnum } from "./enums";
 import { UserEntity } from "../entity/UserEntity";
 import { BusinessEntity } from "../entity/BusinessEntity";
 import { PitchEntity } from "../entity/PitchEntity";
+import bcrypt from "bcrypt";
 
 export function generateVerificationCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -46,4 +47,13 @@ export function getEntityNameFromType(type: NomineeTypeEnum) {
     default:
       return UserEntity;
   }
+}
+
+export async function generateFileName(fileName: string, extension: string): Promise<string> {
+  return (await generateRandomHash(fileName)) + "." + extension;
+}
+
+export async function generateRandomHash(str: string) {
+  const timestamp = new Date().getTime().toString();
+  return (await bcrypt.hash(str + timestamp, SALT_ROUNDS)).replace(/[^\w\d]/g, "");
 }

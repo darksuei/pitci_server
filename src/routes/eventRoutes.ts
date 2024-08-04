@@ -7,11 +7,11 @@ import { deleteEvent } from "../controllers/eventControllers/deleteEvent";
 import { getAllEvents } from "../controllers/userControllers/getEvents";
 import { postCreateEvent } from "../controllers/eventControllers/postCreateEvent";
 import { getEventById } from "../controllers/eventControllers/getEventById";
-// import multer from "multer";
+import multer from "multer";
 
-// const storage = multer.memoryStorage();
+const storage = multer.memoryStorage();
 
-// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ const router = express.Router();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -57,7 +57,13 @@ const router = express.Router();
  *                 example: 3
  *               image:
  *                 type: string
+ *                 format: binary
  *                 description: The event logo / custom image.
+ *                 example: 3
+ *               sponsorImages:
+ *                 type: string
+ *                 format: binary
+ *                 description: The sponsors logo / custom image.
  *                 example: 3
  *               registrationLink:
  *                 type: string
@@ -121,9 +127,16 @@ const router = express.Router();
  *                   type: string
  *                   example: "Internal Server Error"
  */
-router
-  .route("/create-event")
-  .post(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), postCreateEvent);
+router.route("/create-event").post(
+  authenticate,
+  requireDesktopClient,
+  authorization(RoleEnum.ADMIN),
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "sponsorImages", maxCount: 10 },
+  ]),
+  postCreateEvent
+);
 
 /**
  * @swagger

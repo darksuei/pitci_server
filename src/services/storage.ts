@@ -36,31 +36,26 @@ export class StorageService {
     return StorageService.instance;
   }
 
-  public async uploadFile(filePath: string) {
+  public async uploadFile(file: Express.Multer.File, name: string) {
     try {
-      const fileStream = fs.createReadStream(filePath);
-      const baseName = path.basename(filePath);
-
       const params = {
         Bucket: this.s3Bucket,
-        Key: baseName,
-        Body: fileStream,
+        Key: name,
+        Body: file.buffer,
+        ContentType: file.mimetype,
       };
-
-      fileStream.on("error", function (err: Error & { code?: string }) {
-        if (err.code && err.code === "ENOENT") return;
-        logger.error("File Error: ", err);
-      });
 
       const response = await this.s3Client.send(new PutObjectCommand(params));
 
-      if (response.$metadata.httpStatusCode !== 200) throw new Error("Error uploading file to storage.");
+      if (response.$metadata.httpStatusCode !== 200) {
+        throw new Error("Error uploading file to storage.");
+      }
 
-      logger.info(`File ${baseName} uploaded successfully.`);
+      logger.info(`File ${file.originalname} uploaded successfully.`);
 
       return true;
     } catch (err) {
-      logger.error("Error uploading file to storage. ");
+      logger.error("Error uploading file to storage.", err);
       return false;
     }
   }
@@ -68,7 +63,7 @@ export class StorageService {
   public async getPreSignedUrl(key: string) {
     const fileExists = await this.getFile(key);
 
-    if (!fileExists) return null;
+    if (!fileExists) return undefined;
 
     return await getSignedUrl(this.s3Client, new GetObjectCommand({ Bucket: this.s3Bucket, Key: key }), {
       expiresIn: 60 * 60 * 24,
