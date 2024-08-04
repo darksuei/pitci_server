@@ -7,10 +7,17 @@ import { AppDataSource } from "../../database/dataSource";
 import { LinkEntity } from "../../entity/eventRelations/LinkEntity";
 import { SponsorEntity } from "../../entity/eventRelations/SponsorEntity";
 import AlertService from "../../services/AlertService";
+import { StorageService } from "../../services/storage";
+import { generateFileName } from "../../utils";
+import { ApiError } from "../../middlewares/error";
 
 export async function postCreateEvent(req: Request, res: Response) {
   try {
-    validateRequest(PostCreateEventValidationSchema, req.body);
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+    validateRequest(PostCreateEventValidationSchema, req.body, () => {
+      if (!files["image"]) throw new ApiError(httpStatus.BAD_REQUEST, "Image file is required");
+    });
 
     const {
       title,
@@ -18,12 +25,14 @@ export async function postCreateEvent(req: Request, res: Response) {
       location,
       dateTime,
       durationHours,
-      image,
       registrationLink,
       otherLinks,
       sponsors,
       day,
     } = req.body as z.infer<typeof PostCreateEventValidationSchema>;
+
+    const imageRef = await uploadImages(files["image"]);
+    const sponsorImagesRefs = await uploadImages(files["sponsorImages"]);
 
     let event = new EventEntity();
     event.admin_id = req.user!.id;
@@ -33,14 +42,15 @@ export async function postCreateEvent(req: Request, res: Response) {
     event.location = location;
     event.date_time = new Date(dateTime);
     event.duration_hours = durationHours;
-    event.image = image;
     event.registrationLink = registrationLink;
+    event.image_ref = imageRef[0];
+    event.sponsor_images_refs = sponsorImagesRefs;
 
     event = await AppDataSource.manager.save(event);
 
     otherLinks &&
       (await Promise.all(
-        otherLinks.map(async (link) => {
+        JSON.parse(otherLinks).map(async (link: any) => {
           const linkEntity = new LinkEntity();
           link.title && (linkEntity.title = link.title);
           linkEntity.url = link.url;
@@ -51,7 +61,7 @@ export async function postCreateEvent(req: Request, res: Response) {
 
     sponsors &&
       (await Promise.all(
-        sponsors.map(async (sponsor) => {
+        JSON.parse(sponsors).map(async (sponsor: any) => {
           const sponsorEntity = new SponsorEntity();
           sponsorEntity.name = sponsor.name;
           sponsorEntity.description = sponsor.description;
@@ -71,8 +81,29 @@ export async function postCreateEvent(req: Request, res: Response) {
 
     return res.status(httpStatus.CREATED).json({ message: "Event created successfully", event });
   } catch (e: any) {
+    console.error(e);
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: e.message ?? "Internal Server Error" });
   }
+}
+
+async function uploadImages(files: Express.Multer.File[]) {
+  if (!files || files.length == 0) return [];
+
+  const refs: string[] = [];
+
+  for (const file of files) {
+    const fileExt = file.originalname.split(".").pop();
+
+    const fileRef = await generateFileName(file.originalname, fileExt ?? ".png");
+
+    refs.push(fileRef);
+
+    const hasUploadedVerifiableDocument = await StorageService.getInstance().uploadFile(file, fileRef);
+
+    if (!hasUploadedVerifiableDocument) throw new Error("Failed to upload user file to storage service.");
+  }
+
+  return refs;
 }

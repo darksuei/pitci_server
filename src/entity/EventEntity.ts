@@ -48,13 +48,16 @@ export class EventEntity {
   date_time!: Date;
 
   @Column({ nullable: true })
-  duration_hours?: Number;
+  duration_hours?: string;
 
   @Column()
   location!: string;
 
   @Column({ nullable: true })
-  image?: string;
+  image_ref?: string;
+
+  @Column({ type: "jsonb", nullable: true })
+  sponsor_images_refs?: string[];
 
   @CreateDateColumn()
   createdAt!: Date;
