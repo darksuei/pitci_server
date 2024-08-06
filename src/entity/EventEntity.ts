@@ -21,7 +21,7 @@ export class EventEntity {
   @Column()
   title!: string;
 
-  @Column()
+  @Column({ nullable: true })
   day?: string;
 
   @Column({ nullable: true })
