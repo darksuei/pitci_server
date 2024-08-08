@@ -35,6 +35,7 @@ export async function patchReviewPitch(req: Request, res: Response) {
     pitch.review.reviewer_name = req.user!.full_name;
     pitch.review.review_date = new Date();
 
+    await AppDataSource.manager.save(pitch.review);
     await AppDataSource.manager.save(pitch);
 
     switch (reviewStatus) {

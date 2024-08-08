@@ -15,7 +15,7 @@ export async function patchReviewMeetingSchedule(req: Request, res: Response) {
       typeof PatchReviewMeetingScheduleValidationSchema
     >;
 
-    let meeting = await AppDataSource.manager.findOne(MeetingEntity, {
+    const meeting = await AppDataSource.manager.findOne(MeetingEntity, {
       where: { id: meetingId },
       relations: ["review", "proposer", "recipient"],
     });
@@ -31,6 +31,7 @@ export async function patchReviewMeetingSchedule(req: Request, res: Response) {
     meeting.review.reviewer_id = req.user!.id;
     meeting.review.review_date = new Date();
 
+    await AppDataSource.manager.save(meeting.review);
     await AppDataSource.manager.save(meeting);
 
     return res.status(httpStatus.OK).json({ message: "Meeting reviewed successfully", meeting });

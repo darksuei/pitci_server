@@ -32,7 +32,7 @@ export class MeetingEntity {
   meeting_link?: string;
 
   @OneToOne(() => ReviewEntity, { onDelete: "CASCADE" })
-  @JoinColumn()
+  @JoinColumn({ name: "review_id" })
   review!: ReviewEntity;
 
   @CreateDateColumn()
