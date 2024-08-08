@@ -50,6 +50,7 @@ export async function postRegister(req: Request, res: Response) {
       code: auth.verificationCode,
     });
   } catch (e: any) {
+    console.log(e);
     return res
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)
       .json({ success: false, message: e.message ?? "Internal Server Error" });
