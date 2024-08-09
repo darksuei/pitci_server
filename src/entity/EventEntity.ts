@@ -56,6 +56,9 @@ export class EventEntity {
   @Column({ nullable: true })
   image_ref?: string;
 
+  @Column({ nullable: true })
+  image_ref_last_updated?: Date;
+
   @Column({ type: "jsonb", nullable: true })
   sponsor_images_refs?: string[];
 
