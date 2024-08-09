@@ -11,9 +11,7 @@ export async function getEvents(_req: Request, res: Response) {
     });
 
     for (const event of events) {
-      const lastUpdated = event.image_ref_last_updated?.getTime() ?? 1000 * 60 * 60 * 25;
-
-      if (event.image_ref && lastUpdated < Date.now() - 1000 * 60 * 60 * 24) {
+      if (event.image_ref) {
         event.image_ref = await StorageService.getInstance().getPreSignedUrl(event.image_ref);
         event.image_ref_last_updated = new Date();
       }

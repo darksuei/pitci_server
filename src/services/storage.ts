@@ -64,7 +64,7 @@ export class StorageService {
     if (!fileExists) return undefined;
 
     return await getSignedUrl(this.s3Client, new GetObjectCommand({ Bucket: this.s3Bucket, Key: key }), {
-      expiresIn: 1000 * 60 * 60 * 24,
+      expiresIn: 60 * 60 * 24,
     });
   }
 
