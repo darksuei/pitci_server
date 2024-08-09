@@ -8,7 +8,7 @@ import { postRequestPhoneNumberChange } from "../controllers/userControllers/add
 import { patchPhoneNumber } from "../controllers/userControllers/addPhoneNumber/patchPhoneNumber";
 import { patchNotificationSettings } from "../controllers/userControllers/patchNotificationSettings";
 import { getBusinesses } from "../controllers/adminControllers/business/getBusinesses";
-import { getAllEvents } from "../controllers/userControllers/getEvents";
+import { getEvents } from "../controllers/userControllers/getEvents";
 import { getAlerts } from "../controllers/userControllers/alerts/getAlerts";
 import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patchMarkAlertAsRead";
 import { postScheduleMeeting } from "../controllers/userControllers/postScheduleMeeting";
@@ -506,7 +506,7 @@ router.route("/phone/update-user-phone").patch(authenticate, patchPhoneNumber);
  *                   type: string
  *                   example: "Internal Server Error"
  */
-router.route("/get-all-events").get(getAllEvents);
+router.route("/get-all-events").get(getEvents);
 
 /**
  * @swagger

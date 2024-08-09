@@ -2,12 +2,24 @@ import httpStatus from "http-status";
 import { Request, Response } from "express";
 import { EventEntity } from "../../entity/EventEntity";
 import { AppDataSource } from "../../database/dataSource";
+import { StorageService } from "../../services/storage";
 
-export async function getAllEvents(_req: Request, res: Response) {
+export async function getEvents(_req: Request, res: Response) {
   try {
     const events = await AppDataSource.manager.find(EventEntity, {
       relations: ["otherLinks", "sponsors"],
     });
+
+    for (const event of events) {
+      const lastUpdated = event.image_ref_last_updated?.getTime() ?? 1000 * 60 * 60 * 25;
+
+      if (event.image_ref && lastUpdated < Date.now() - 1000 * 60 * 60 * 24) {
+        event.image_ref = await StorageService.getInstance().getPreSignedUrl(event.image_ref);
+        event.image_ref_last_updated = new Date();
+      }
+    }
+
+    await AppDataSource.manager.save(events);
 
     return res.status(httpStatus.OK).json(events);
   } catch (e: any) {

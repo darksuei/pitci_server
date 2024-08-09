@@ -4,10 +4,10 @@ import { requireDesktopClient } from "../middlewares/requireDesktopClient";
 import { authorization } from "../middlewares/authorization";
 import { RoleEnum } from "../utils/enums";
 import { deleteEvent } from "../controllers/eventControllers/deleteEvent";
-import { getAllEvents } from "../controllers/userControllers/getEvents";
 import { postCreateEvent } from "../controllers/eventControllers/postCreateEvent";
 import { getEventById } from "../controllers/eventControllers/getEventById";
 import multer from "multer";
+import { getAllEvents } from "../controllers/eventControllers/getAllEvents";
 
 const storage = multer.memoryStorage();
 
