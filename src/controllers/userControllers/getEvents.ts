@@ -3,21 +3,25 @@ import { Request, Response } from "express";
 import { EventEntity } from "../../entity/EventEntity";
 import { AppDataSource } from "../../database/dataSource";
 import { StorageService } from "../../services/storage";
+import { hoursToMilliSeconds } from "../../utils";
 
 export async function getEvents(_req: Request, res: Response) {
   try {
-    const events = await AppDataSource.manager.find(EventEntity, {
+    let events = await AppDataSource.manager.find(EventEntity, {
       relations: ["otherLinks", "sponsors"],
     });
 
     for (const event of events) {
-      if (event.image_ref) {
-        event.image_ref = await StorageService.getInstance().getPreSignedUrl(event.image_ref);
-        event.image_ref_last_updated = new Date();
+      const lastUpdated = event.image_url_last_updated?.getTime() ?? 0;
+      const currentTime = Date.now();
+
+      if (event.image_ref && currentTime - lastUpdated > hoursToMilliSeconds(12)) {
+        event.image_url = await StorageService.getInstance().getPreSignedUrl(event.image_ref);
+        event.image_url_last_updated = new Date();
       }
     }
 
-    await AppDataSource.manager.save(events);
+    events = await AppDataSource.manager.save(events);
 
     return res.status(httpStatus.OK).json(events);
   } catch (e: any) {

@@ -37,11 +37,7 @@ export async function getSearchByQueryString(req: Request, res: Response) {
     });
 
     return res.status(httpStatus.OK).json({
-      results: {
-        ...user_results,
-        ...business_results,
-        ...pitch_results,
-      },
+      results: [...user_results, ...business_results, ...pitch_results],
     });
   } catch (e: any) {
     return res.status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR).json({
