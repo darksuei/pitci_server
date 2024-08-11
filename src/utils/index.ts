@@ -57,3 +57,5 @@ export async function generateRandomHash(str: string) {
   const timestamp = new Date().getTime().toString();
   return (await bcrypt.hash(str + timestamp, SALT_ROUNDS)).replace(/[^\w\d]/g, "");
 }
+
+export const hoursToMilliSeconds = (hours: number) => hours * 60 * 60 * 1000;

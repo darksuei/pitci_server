@@ -688,12 +688,6 @@ router.route("/get-scheduled-meetings").get(authenticate, getScheduledMeetings);
  *   get:
  *     summary: Get results by searching
  *     parameters:
- *      - name: type
- *        in: query
- *        description: query type - user | business | pitch
- *        required: true
- *        schema:
- *          type: string
  *      - name: query
  *        in: query
  *        description: search string
