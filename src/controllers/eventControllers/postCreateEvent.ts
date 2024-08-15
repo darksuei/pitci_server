@@ -100,7 +100,9 @@ async function uploadImages(files: Express.Multer.File[]) {
 
     refs.push(fileRef);
 
-    const hasUploadedVerifiableDocument = await StorageService.uploadFile(file, fileRef);
+    const storageService = new StorageService();
+
+    const hasUploadedVerifiableDocument = await storageService.uploadFile(file, fileRef);
 
     if (!hasUploadedVerifiableDocument) throw new Error("Failed to upload user file to storage service.");
   }
