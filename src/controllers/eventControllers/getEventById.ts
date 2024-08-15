@@ -24,15 +24,17 @@ export async function getEventById(req: Request, res: Response) {
     const lastUpdated = event.image_url_last_updated?.getTime() ?? 0;
     const currentTime = Date.now();
 
+    const storageService = new StorageService();
+
     if (event.image_ref && currentTime - lastUpdated > hoursToMilliSeconds(12)) {
-      event.image_url = await StorageService.getPreSignedUrl(event.image_ref);
+      event.image_url = await storageService.getPreSignedUrl(event.image_ref);
       event.image_url_last_updated = new Date();
     }
 
     if (event.sponsor_images_refs) {
       for (let i = 0; i < event.sponsor_images_refs.length; i++) {
         event.sponsor_images_refs[i] =
-          (await StorageService.getPreSignedUrl(event.sponsor_images_refs[i])) ?? "";
+          (await storageService.getPreSignedUrl(event.sponsor_images_refs[i])) ?? "";
       }
     }
 

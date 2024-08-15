@@ -15,8 +15,10 @@ export async function getAllEvents(_req: Request, res: Response) {
       const lastUpdated = event.image_url_last_updated?.getTime() ?? 0;
       const currentTime = Date.now();
 
+      const storageService = new StorageService();
+
       if (event.image_ref && currentTime - lastUpdated > hoursToMilliSeconds(12)) {
-        event.image_url = await StorageService.getPreSignedUrl(event.image_ref);
+        event.image_url = await storageService.getPreSignedUrl(event.image_ref);
         event.image_url_last_updated = new Date();
       }
     }
