@@ -9,8 +9,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-export class StorageService {
-  private static instance: StorageService | null = null;
+class StorageService {
   private readonly s3Client: S3Client;
   private readonly s3Bucket = readEnv("S3_BUCKET") as string;
   private readonly s3Options: S3ClientConfig = {
@@ -25,13 +24,6 @@ export class StorageService {
 
   constructor() {
     this.s3Client = new S3Client(this.s3Options);
-  }
-
-  static getInstance(): StorageService {
-    if (!StorageService.instance) {
-      StorageService.instance = new StorageService();
-    }
-    return StorageService.instance;
   }
 
   public async uploadFile(file: Express.Multer.File, name: string) {
@@ -98,3 +90,5 @@ export class StorageService {
     }
   }
 }
+
+export default new StorageService();

@@ -5,7 +5,7 @@ import { EventEntity } from "../../entity/EventEntity";
 import { ParamIdValidationSchema, validateRequest } from "../../validators";
 import * as z from "zod";
 import { ApiError } from "../../middlewares/error";
-import { StorageService } from "../../services/storage";
+import StorageService from "../../services/storage";
 import { hoursToMilliSeconds } from "../../utils";
 
 export async function getEventById(req: Request, res: Response) {
@@ -25,14 +25,14 @@ export async function getEventById(req: Request, res: Response) {
     const currentTime = Date.now();
 
     if (event.image_ref && currentTime - lastUpdated > hoursToMilliSeconds(12)) {
-      event.image_url = await StorageService.getInstance().getPreSignedUrl(event.image_ref);
+      event.image_url = await StorageService.getPreSignedUrl(event.image_ref);
       event.image_url_last_updated = new Date();
     }
 
     if (event.sponsor_images_refs) {
       for (let i = 0; i < event.sponsor_images_refs.length; i++) {
         event.sponsor_images_refs[i] =
-          (await StorageService.getInstance().getPreSignedUrl(event.sponsor_images_refs[i])) ?? "";
+          (await StorageService.getPreSignedUrl(event.sponsor_images_refs[i])) ?? "";
       }
     }
 

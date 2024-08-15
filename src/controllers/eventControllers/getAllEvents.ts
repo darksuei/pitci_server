@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import { Request, Response } from "express";
 import { AppDataSource } from "../../database/dataSource";
 import { EventEntity } from "../../entity/EventEntity";
-import { StorageService } from "../../services/storage";
+import StorageService from "../../services/storage";
 import { hoursToMilliSeconds } from "../../utils";
 
 export async function getAllEvents(_req: Request, res: Response) {
@@ -16,7 +16,7 @@ export async function getAllEvents(_req: Request, res: Response) {
       const currentTime = Date.now();
 
       if (event.image_ref && currentTime - lastUpdated > hoursToMilliSeconds(12)) {
-        event.image_url = await StorageService.getInstance().getPreSignedUrl(event.image_ref);
+        event.image_url = await StorageService.getPreSignedUrl(event.image_ref);
         event.image_url_last_updated = new Date();
       }
     }

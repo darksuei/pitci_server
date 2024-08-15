@@ -7,7 +7,7 @@ import { AppDataSource } from "../../database/dataSource";
 import { LinkEntity } from "../../entity/eventRelations/LinkEntity";
 import { SponsorEntity } from "../../entity/eventRelations/SponsorEntity";
 import AlertService from "../../services/AlertService";
-import { StorageService } from "../../services/storage";
+import StorageService from "../../services/storage";
 import { generateFileName } from "../../utils";
 import { ApiError } from "../../middlewares/error";
 
@@ -100,7 +100,7 @@ async function uploadImages(files: Express.Multer.File[]) {
 
     refs.push(fileRef);
 
-    const hasUploadedVerifiableDocument = await StorageService.getInstance().uploadFile(file, fileRef);
+    const hasUploadedVerifiableDocument = await StorageService.uploadFile(file, fileRef);
 
     if (!hasUploadedVerifiableDocument) throw new Error("Failed to upload user file to storage service.");
   }
