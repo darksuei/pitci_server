@@ -15,6 +15,7 @@ import { postCreateBusiness } from "../controllers/adminControllers/business/pos
 import { patchReviewMeetingSchedule } from "../controllers/adminControllers/patchReviewMeetingSchedule";
 import { getAllScheduledMeetings } from "../controllers/adminControllers/getAllScheduledMeetings";
 import { deleteBusiness } from "../controllers/adminControllers/business/deleteBusiness";
+import { patchRevokeAdminStatus } from "../controllers/adminControllers/patchRevokeAdminStatus";
 
 const router = express.Router();
 
@@ -634,5 +635,56 @@ router
 router
   .route("/delete-business/:id")
   .delete(authenticate, requireDesktopClient, authorization(RoleEnum.ADMIN), deleteBusiness);
+
+/**
+ * @swagger
+ * /api/v1/admin/revoke-admin-status/{id}:
+ *   patch:
+ *     summary: Revoke an existing admin's status
+ *     description: Revokes an existing admin's status by updating the role of an existing user.
+ *     tags:
+ *       - admin
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the admin
+ *     responses:
+ *       200:
+ *         description: Admin status revoked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Admin status revoked successfully"
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Admin not found."
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router
+  .route("/revoke-admin-status/:id")
+  .patch(authenticate, requireDesktopClient, authorization(RoleEnum.SUPER_ADMIN), patchRevokeAdminStatus);
 
 export default router;

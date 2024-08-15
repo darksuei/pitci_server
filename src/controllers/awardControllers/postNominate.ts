@@ -21,9 +21,12 @@ export async function postNominate(req: Request, res: Response) {
 
     const userId = user.id;
 
-    const { awardId, nomineeId, nomineeType, reason } = req.body as z.infer<
-      typeof PostNominateValidationSchema
-    >;
+    const {
+      awardId,
+      nomineeId,
+      nomineeType = NomineeTypeEnum.BUSINESS,
+      reason,
+    } = req.body as z.infer<typeof PostNominateValidationSchema>;
 
     const award = await AppDataSource.manager.findOne(AwardsEntity, {
       where: { id: awardId, status: AwardStatusEnum.NOMINATIONS_OPEN },
@@ -70,7 +73,7 @@ export async function postNominate(req: Request, res: Response) {
     nominee = await AppDataSource.manager.save(nominee);
 
     // User alert when they are nominated
-    await AlertService.awardNomination(userId, award.title, user.notification_status);
+    await AlertService.awardNomination(nomineeId, award.title, user.notification_status);
 
     return res.status(httpStatus.CREATED).json({
       success: true,

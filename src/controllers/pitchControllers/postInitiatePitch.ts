@@ -8,6 +8,7 @@ import { createPersonalInformationProvider } from "../../providers/pitchProvider
 import { ReviewEntity } from "../../entity/ReviewEntity";
 import { ReviewStatusEnum } from "../../utils/enums";
 import { UserEntity } from "../../entity/UserEntity";
+import { generate8DigitId } from "../../utils";
 
 export async function postInitiatePitch(req: Request, res: Response) {
   try {
@@ -34,6 +35,10 @@ export async function postInitiatePitch(req: Request, res: Response) {
     review = await AppDataSource.manager.save(review);
 
     pitch.review = review;
+
+    pitch = await AppDataSource.manager.save(pitch);
+
+    pitch.uid = await generate8DigitId(pitch.id);
 
     pitch = await AppDataSource.manager.save(pitch);
 

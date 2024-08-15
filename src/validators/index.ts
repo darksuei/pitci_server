@@ -182,7 +182,7 @@ export const PostCreateAwardValidationSchema = z.object({
 export const PostNominateValidationSchema = z.object({
   awardId: z.string().uuid(),
   nomineeId: z.string().uuid(),
-  nomineeType: z.enum([NomineeTypeEnum.USER, NomineeTypeEnum.BUSINESS, NomineeTypeEnum.PITCH]),
+  nomineeType: z.enum([NomineeTypeEnum.USER, NomineeTypeEnum.BUSINESS, NomineeTypeEnum.PITCH]).optional(),
   reason: z.string().optional(),
 });
 
