@@ -22,6 +22,9 @@ export class PitchEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column({ nullable: true })
+  uid!: string;
+
   @OneToOne(() => PersonalInformationEntity, { onDelete: "CASCADE" })
   @JoinColumn()
   personal_information!: PersonalInformationEntity;

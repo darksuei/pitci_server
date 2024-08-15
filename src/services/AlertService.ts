@@ -20,9 +20,9 @@ class AlertService {
       case "newEvent":
         return `A new event - '${main}' is now available!`;
       case "pitchApproved":
-        return `Your pitch: ${main} has been approved!`;
+        return `Your pitch: #${main} has been approved!`;
       case "pitchRejected":
-        return `Your pitch: ${main} has been rejected!`;
+        return `Your pitch: #${main} has been rejected!`;
       case "phoneNumberChanged":
         return `Your phone number has successfully been updated!`;
       case "passwordChanged":
@@ -63,7 +63,7 @@ class AlertService {
     const alert = new AlertEntity();
     alert.userId = userId;
     alert.title = this.alerts.get("pitchApproved")!;
-    alert.message = this.getAlertMessage("pitchApproved", pitch.id);
+    alert.message = this.getAlertMessage("pitchApproved", pitch.uid || pitch.id.split("-")[0]);
     await AppDataSource.manager.save(alert);
   }
 
@@ -77,7 +77,7 @@ class AlertService {
     const alert = new AlertEntity();
     alert.userId = userId;
     alert.title = this.alerts.get("pitchRejected")!;
-    alert.message = this.getAlertMessage("pitchRejected", pitch.id);
+    alert.message = this.getAlertMessage("pitchRejected", pitch.uid || pitch.id.split("-")[0]);
     await AppDataSource.manager.save(alert);
   }
 

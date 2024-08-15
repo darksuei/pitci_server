@@ -103,7 +103,7 @@ router
  *               nomineeType:
  *                 type: string
  *                 description: The type of the nominee - could be user | business | pitch
- *                 example: "business | user | pitch"
+ *                 example: "business | user | pitch (now optional - leave blank to use default)"
  *               awardId:
  *                 type: string
  *                 description: The id of the award the nominee is getting nominated for

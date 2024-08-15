@@ -59,3 +59,33 @@ export async function generateRandomHash(str: string) {
 }
 
 export const hoursToMilliSeconds = (hours: number) => hours * 60 * 60 * 1000;
+
+function base36Encode(num: number) {
+  const alph = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if (num === 0) return alph[0];
+  let base36 = "";
+  while (num) {
+    const i = num % 36;
+    base36 = alph[i] + base36;
+    num = Math.floor(num / 36);
+  }
+  return base36;
+}
+
+export async function generate8DigitId(uuid: string) {
+  // Create a SHA-256 hash of the UUID
+  const encoder = new TextEncoder();
+  const data = encoder.encode(uuid);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+  // Convert the hash to a hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+
+  // Convert the hashHex to a Base36 encoded string
+  const base36Val = parseInt(hashHex, 16);
+  const base36Str = base36Encode(base36Val);
+
+  // Return the first 8 alphanumeric characters
+  return base36Str.slice(0, 8);
+}
