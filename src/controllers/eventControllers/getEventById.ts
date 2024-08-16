@@ -32,10 +32,11 @@ export async function getEventById(req: Request, res: Response) {
     }
 
     if (event.sponsor_images_refs) {
+      const urls: string[] = [];
       for (let i = 0; i < event.sponsor_images_refs.length; i++) {
-        event.sponsor_images_refs[i] =
-          (await storageService.getPreSignedUrl(event.sponsor_images_refs[i])) ?? "";
+        urls.push((await storageService.getPreSignedUrl(event.sponsor_images_refs[i])) ?? "");
       }
+      event.sponsor_images_urls = urls;
     }
 
     await AppDataSource.manager.save(event);
