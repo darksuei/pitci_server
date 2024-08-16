@@ -65,6 +65,9 @@ export class EventEntity {
   @Column({ type: "jsonb", nullable: true })
   sponsor_images_refs?: string[];
 
+  @Column({ type: "jsonb", nullable: true })
+  sponsor_images_urls?: string[];
+
   @CreateDateColumn()
   createdAt!: Date;
 
