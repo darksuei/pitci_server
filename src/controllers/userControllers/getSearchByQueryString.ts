@@ -34,6 +34,7 @@ export async function getSearchByQueryString(req: Request, res: Response) {
           },
         },
       ],
+      relations: ["personal_information", "competition_questions"],
     });
 
     return res.status(httpStatus.OK).json({
