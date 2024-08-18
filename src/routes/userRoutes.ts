@@ -612,6 +612,9 @@ router.route("/mark-alerts-as-read").patch(authenticate, patchMarkAlertAsRead);
  *               description:
  *                 type: string
  *                 example: "example description"
+ *               companyProfile:
+ *                 type: string
+ *                 example: "Sample company profile"
  *               recipientId:
  *                 type: string
  *                 example: "uuid()"
