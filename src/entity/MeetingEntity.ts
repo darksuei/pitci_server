@@ -35,6 +35,9 @@ export class MeetingEntity {
   @JoinColumn({ name: "review_id" })
   review!: ReviewEntity;
 
+  @Column({ nullable: true })
+  company_profile?: string;
+
   @CreateDateColumn()
   created_at!: Date;
 

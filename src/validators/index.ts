@@ -166,6 +166,7 @@ export const PostCreateBusinessValidationSchema = z.object({
 export const PostScheduleMeetingValidationSchema = z.object({
   description: z.string(),
   recipientId: z.string().uuid(),
+  companyProfile: z.string().optional(),
 });
 
 export const PatchReviewMeetingScheduleValidationSchema = z.object({
