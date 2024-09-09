@@ -26,6 +26,10 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
         "pitch.technical_agreement",
         "nominated_for",
         "nominated_for.award",
+        "proposed_meetings",
+        "proposed_meetings.proposer",
+        "proposed_meetings.recipient",
+        "proposed_meetings.review",
       ],
     });
 

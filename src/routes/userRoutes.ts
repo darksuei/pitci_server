@@ -7,7 +7,7 @@ import { patchUserPassword } from "../controllers/userControllers/changePassword
 import { postRequestPhoneNumberChange } from "../controllers/userControllers/addPhoneNumber/postRequestPhoneNumberChange";
 import { patchPhoneNumber } from "../controllers/userControllers/addPhoneNumber/patchPhoneNumber";
 import { patchNotificationSettings } from "../controllers/userControllers/patchNotificationSettings";
-import { getBusinesses } from "../controllers/adminControllers/business/getBusinesses";
+import { getBusinesses } from "../controllers/userControllers/getBusinesses";
 import { getEvents } from "../controllers/userControllers/getEvents";
 import { getAlerts } from "../controllers/userControllers/alerts/getAlerts";
 import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patchMarkAlertAsRead";
