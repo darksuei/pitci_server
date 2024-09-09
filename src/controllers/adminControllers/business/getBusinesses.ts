@@ -5,8 +5,14 @@ import { BusinessEntity } from "../../../entity/BusinessEntity";
 
 export async function getBusinesses(_req: Request, res: Response) {
   try {
-    const businesses = await AppDataSource.manager.find(BusinessEntity);
-
+    const businesses = await AppDataSource.manager.find(BusinessEntity, {
+      relations: [
+        "received_meetings",
+        "received_meetings.proposer",
+        "received_meetings.recipient",
+        "nominated_for",
+      ],
+    });
     return res.status(httpStatus.OK).json(businesses);
   } catch (e: any) {
     return res
