@@ -6,6 +6,7 @@ import { UserEntity } from "../entity/UserEntity";
 import { BusinessEntity } from "../entity/BusinessEntity";
 import { PitchEntity } from "../entity/PitchEntity";
 import bcrypt from "bcrypt";
+import StorageService from "../services/storage";
 
 export function generateVerificationCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -88,4 +89,26 @@ export async function generate8DigitId(uuid: string) {
 
   // Return the first 8 alphanumeric characters
   return base36Str.slice(0, 8);
+}
+
+export async function uploadImages(files: Express.Multer.File[]) {
+  if (!files || files.length == 0) return [];
+
+  const refs: string[] = [];
+
+  for (const file of files) {
+    const fileExt = file.originalname.split(".").pop();
+
+    const fileRef = await generateFileName(file.originalname, fileExt ?? ".png");
+
+    refs.push(fileRef);
+
+    const storageService = new StorageService();
+
+    const hasUploadedVerifiableDocument = await storageService.uploadFile(file, fileRef);
+
+    if (!hasUploadedVerifiableDocument) throw new Error("Failed to upload user file to storage service.");
+  }
+
+  return refs;
 }

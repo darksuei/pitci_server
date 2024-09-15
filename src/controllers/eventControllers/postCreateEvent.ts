@@ -7,8 +7,7 @@ import { AppDataSource } from "../../database/dataSource";
 import { LinkEntity } from "../../entity/eventRelations/LinkEntity";
 import { SponsorEntity } from "../../entity/eventRelations/SponsorEntity";
 import AlertService from "../../services/AlertService";
-import StorageService from "../../services/storage";
-import { generateFileName } from "../../utils";
+import { uploadImages } from "../../utils";
 import { ApiError } from "../../middlewares/error";
 
 export async function postCreateEvent(req: Request, res: Response) {
@@ -86,26 +85,4 @@ export async function postCreateEvent(req: Request, res: Response) {
       .status(e.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: e.message ?? "Internal Server Error" });
   }
-}
-
-async function uploadImages(files: Express.Multer.File[]) {
-  if (!files || files.length == 0) return [];
-
-  const refs: string[] = [];
-
-  for (const file of files) {
-    const fileExt = file.originalname.split(".").pop();
-
-    const fileRef = await generateFileName(file.originalname, fileExt ?? ".png");
-
-    refs.push(fileRef);
-
-    const storageService = new StorageService();
-
-    const hasUploadedVerifiableDocument = await storageService.uploadFile(file, fileRef);
-
-    if (!hasUploadedVerifiableDocument) throw new Error("Failed to upload user file to storage service.");
-  }
-
-  return refs;
 }

@@ -36,6 +36,10 @@ const options: swaggerJsdoc.Options = {
         name: "admin",
         description: "Endpoints for admin operations",
       },
+      {
+        name: "sponsor",
+        description: "Endpoints for sponsors",
+      },
     ],
     info: {
       title: "PITCI Documentation",

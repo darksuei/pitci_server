@@ -4,7 +4,13 @@ import { ApiError } from "../middlewares/error";
 import * as z from "zod";
 import { VERIFICATION_CODE_EXPIRY_TIME } from "../utils/constants";
 import { PatchPitchStep } from "../types";
-import { AwardStatusEnum, GenderEnum, NomineeTypeEnum, ReviewStatusEnum } from "../utils/enums";
+import {
+  AwardStatusEnum,
+  GenderEnum,
+  NomineeTypeEnum,
+  ReviewStatusEnum,
+  SponsorCategoryEnum,
+} from "../utils/enums";
 
 export const ParamIdValidationSchema = z.object({
   id: z.string().uuid("Please enter a valid id"),
@@ -200,6 +206,14 @@ export const PatchAwardStatusValidationSchema = z.object({
     AwardStatusEnum.VOTING_OPEN,
     AwardStatusEnum.CLOSED,
   ]),
+});
+
+export const PostCreateSponsorValidationSchema = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  website: z.string().optional(),
+  category: z.nativeEnum(SponsorCategoryEnum),
+  eventId: z.string().optional(),
 });
 
 export const PatchPitchValidationSchemaFactory = (step: PatchPitchStep) => {
