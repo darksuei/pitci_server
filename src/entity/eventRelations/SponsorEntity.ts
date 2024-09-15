@@ -1,10 +1,11 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EventEntity } from "../EventEntity";
+import { SponsorCategoryEnum } from "../../utils/enums";
 
 @Entity("sponsor")
 export class SponsorEntity {
   @PrimaryGeneratedColumn("uuid")
-  id!: number;
+  id!: string;
 
   @Column()
   name!: string;
@@ -18,9 +19,12 @@ export class SponsorEntity {
   @Column({ nullable: true })
   website?: string;
 
-  @ManyToOne(() => EventEntity, (entity) => entity.sponsors, { onDelete: "CASCADE" })
+  @Column({ nullable: true, type: "enum", enum: SponsorCategoryEnum })
+  category!: SponsorCategoryEnum;
+
+  @ManyToOne(() => EventEntity, (entity) => entity.sponsors, { nullable: true, onDelete: "CASCADE" })
   @JoinColumn()
-  event!: EventEntity;
+  event?: EventEntity;
 
   @CreateDateColumn()
   created_at!: Date;

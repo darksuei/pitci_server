@@ -42,3 +42,11 @@ export enum NomineeTypeEnum {
   BUSINESS = "business",
   PITCH = "pitch",
 }
+
+export enum SponsorCategoryEnum {
+  GENERAL = "general",
+  EVENT = "event",
+  AWARD = "award",
+  PITCH = "pitch",
+  BUSINESS = "business",
+}
