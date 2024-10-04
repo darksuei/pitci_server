@@ -21,6 +21,8 @@ export const LoginSchema = z.object({
   password: z.string(),
 });
 
+export const DeleteUserAccountSchema = LoginSchema;
+
 export const RegisterSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   fullName: z.string(),
