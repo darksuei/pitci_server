@@ -18,7 +18,7 @@ export class AuthEntity {
   @Column({ nullable: true })
   sessionId!: string;
 
-  @OneToOne(() => UserEntity, (entity) => entity.auth)
+  @OneToOne(() => UserEntity, (entity) => entity.auth, { onDelete: "CASCADE" })
   @JoinColumn()
   user!: UserEntity;
 
