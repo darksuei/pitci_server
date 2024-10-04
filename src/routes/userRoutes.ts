@@ -14,6 +14,7 @@ import { patchMarkAlertAsRead } from "../controllers/userControllers/alerts/patc
 import { postScheduleMeeting } from "../controllers/userControllers/postScheduleMeeting";
 import { getScheduledMeetings } from "../controllers/userControllers/getScheduledMeetings";
 import { getSearchByQueryString } from "../controllers/userControllers/getSearchByQueryString";
+import { deleteUserAccount } from "../controllers/userControllers/deleteUserAccount";
 
 const router = express.Router();
 
@@ -719,5 +720,47 @@ router.route("/get-scheduled-meetings").get(authenticate, getScheduledMeetings);
  *                   description: Error message
  */
 router.route("/get-search-by-query-string").get(authenticate, getSearchByQueryString);
+
+/**
+ * @swagger
+ * /api/v1/user/delete-account:
+ *   delete:
+ *     summary: Delete a user
+ *     description: Delete a user.
+ *     tags:
+ *       - user
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User deleted successfully"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ */
+router.route("/delete-account").delete(authenticate, deleteUserAccount);
 
 export default router;

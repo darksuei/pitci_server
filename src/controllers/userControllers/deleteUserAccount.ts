@@ -6,6 +6,7 @@ import { AppDataSource } from "../../database/dataSource";
 import { UserEntity } from "../../entity/UserEntity";
 import { ApiError } from "../../middlewares/error";
 import bcrypt from "bcrypt";
+import { RoleEnum } from "../../utils/enums";
 
 export async function deleteUserAccount(req: Request, res: Response) {
   try {
@@ -18,6 +19,9 @@ export async function deleteUserAccount(req: Request, res: Response) {
     });
 
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+    if (user.role === RoleEnum.SUPER_ADMIN)
+      throw new ApiError(httpStatus.BAD_REQUEST, "Super Admin account cannot be deleted.");
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
