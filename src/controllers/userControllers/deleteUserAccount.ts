@@ -27,7 +27,7 @@ export async function deleteUserAccount(req: Request, res: Response) {
 
     if (!isPasswordValid) throw new ApiError(httpStatus.BAD_REQUEST, "Invalid password.");
 
-    await AppDataSource.manager.delete(UserEntity, user.id);
+    await AppDataSource.manager.remove(user);
 
     return res.status(httpStatus.OK).json({
       success: true,
