@@ -74,7 +74,7 @@ export class UserEntity {
   @JoinColumn()
   votes!: VoteEntity[];
 
-  @OneToMany(() => AwardNomineesEntity, (i) => i.user_nominee)
+  @OneToMany(() => AwardNomineesEntity, (i) => i.user_nominee, { onDelete: "CASCADE" })
   @JoinColumn()
   nominated_for!: AwardNomineesEntity[];
 

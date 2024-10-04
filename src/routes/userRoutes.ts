@@ -729,6 +729,19 @@ router.route("/get-search-by-query-string").get(authenticate, getSearchByQuerySt
  *     description: Delete a user.
  *     tags:
  *       - user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "test@email.com"
+ *               password:
+ *                 type: string
+ *                 example: "password"
  *     responses:
  *       200:
  *         description: User deleted successfully
